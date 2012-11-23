@@ -48,11 +48,8 @@ package
 					tile = bytes.readByte();
 					
 					tiles.setTile(i, j, tile);
-					FP.log(tile);
 				}
 			}
-			
-			FP.log(tiles.columns + "x" + tiles.rows);
 		}
 		
 		public function toString ():String

@@ -22,10 +22,11 @@ package
 		public static var tiles:Tilemap;
 		public static var data:LevelData;
 		
-		public static var PERSISTENT:Boolean = false;
+		public static var PERSISTENT:Boolean = true;
 		
 		public static function init ():void
 		{
+			
 			tiles = new Tilemap(EditTilesGfx, FP.width, FP.height, Main.TW, Main.TW);
 			
 			data = new LevelData;
@@ -35,11 +36,9 @@ package
 			
 			tiles.setRect(0,0, tiles.columns, tiles.rows, 0);
 			
-			/*if (PERSISTENT && Main.so.data.editState) {
+			if (PERSISTENT && Main.devMode && Main.so.data.editState) {
 				startLevel = Main.so.data.editState;
-			} else {
-				//startLevel = new DefaultRoom;
-			}*/
+			}
 			
 			data.fromString(startLevel);
 			
@@ -245,7 +244,7 @@ package
 		private function changed (): void
 		{
 			CopyPaste.data = getWorldData();
-			//Main.so.data.editState = getWorldData();
+			Main.so.data.editState = getWorldData();
 		}
 	}
 }
