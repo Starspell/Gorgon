@@ -24,7 +24,7 @@ package
 		public var moveQueue:Array = [];
 		public var direction:String;
 		
-		public function Player() 
+		public function Player( startX:Number = 400, startY:Number = 300) 
 		{
 			// Defining input groups
 			Input.define("up", Key.W, Key.UP);
@@ -35,7 +35,7 @@ package
 			playerImage = new Image(PLAYER);
 			playerImage.centerOO();
 			
-			super(400, 300, playerImage);
+			super(startX, startY, playerImage);
 		}
 		
 		override public function update():void
