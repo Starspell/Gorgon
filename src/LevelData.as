@@ -25,7 +25,7 @@ package
 		public function fromString (data:String):void
 		{
 			if (! tiles) {
-				tiles = new Tilemap(Editor.EditTilesGfx, 320, 240, 32, 32);
+				tiles = new Tilemap(Editor.EditTilesGfx, 320, 240, Main.TW, Main.TW);
 			}
 			
 			if (data.length == 0) return;
@@ -48,8 +48,11 @@ package
 					tile = bytes.readByte();
 					
 					tiles.setTile(i, j, tile);
+					FP.log(tile);
 				}
 			}
+			
+			FP.log(tiles.columns + "x" + tiles.rows);
 		}
 		
 		public function toString ():String

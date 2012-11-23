@@ -17,8 +17,10 @@ package
 		[Embed(source = '../assets/sprites/player.png')] private const PLAYER:Class;
 		
 		private const maxSpeed:Number = 2.5;
+		private const tweenTime:Number = 15;
 		
 		private var playerImage:Image;
+		private var canMove:Boolean = true;
 		
 		public var moveQueue:Array = [];
 		public var direction:String;
@@ -37,12 +39,20 @@ package
 			super(startX, startY, playerImage);
 		}
 		
+		private function moveDone (): void
+		{
+			canMove = true;
+			direction = null;
+		}
+		
 		override public function update():void
 		{
 			if (Input.pressed("right")) moveQueue.push(Key.RIGHT);
 			if (Input.pressed("left")) 	moveQueue.push(Key.LEFT);
 			if (Input.pressed("up")) 	moveQueue.push(Key.UP);
 			if (Input.pressed("down")) 	moveQueue.push(Key.DOWN);
+			
+			if ( !canMove ) return;
 			
 			var dx:int;
 			var dy:int;
@@ -75,8 +85,9 @@ package
 			else if (dy < 0) direction = "up";
 			else if (dy > 0) direction = "down";
 			
-			x += dx * maxSpeed;
-			y += dy * maxSpeed;
+			canMove = false;
+			
+			FP.tween(this, {x: x+dx*Main.TW, y:y+dy*Main.TW}, tweenTime*FP.elapsed, {tweener: FP.tweener, complete: moveDone});
 		}
 		
 		override public function render():void

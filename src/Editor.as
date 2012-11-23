@@ -55,7 +55,7 @@ package
 			}
 			
 			if (Input.pressed(Key.E)) {
-				//FP.world = new Level(data, 0);
+				FP.world = new GameWorld(data);
 				return;
 			}
 			
