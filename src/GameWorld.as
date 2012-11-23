@@ -15,6 +15,7 @@ package
 			player = new Player();
 			
 			add(player);
+			add(new Monster());
 		}
 		
 	}

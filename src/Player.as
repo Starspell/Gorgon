@@ -16,15 +16,14 @@ package
 	{
 		[Embed(source = '../assets/sprites/player.png')] private const PLAYER:Class;
 		
-		private const maxSpeed:Number = 5;
-		private const stoppingThreshold:Number = 1;
+		private const maxSpeed:Number = 2.5;
 		
 		private var playerImage:Image;
 		
 		public var moveQueue:Array = [];
 		public var direction:String;
 		
-		public function Player( startX:Number = 400, startY:Number = 300) 
+		public function Player( startX:Number = 170, startY:Number = 120 ) 
 		{
 			// Defining input groups
 			Input.define("up", Key.W, Key.UP);
@@ -41,9 +40,9 @@ package
 		override public function update():void
 		{
 			if (Input.pressed("right")) moveQueue.push(Key.RIGHT);
-			if (Input.pressed("left")) moveQueue.push(Key.LEFT);
-			if (Input.pressed("up")) moveQueue.push(Key.UP);
-			if (Input.pressed("down")) moveQueue.push(Key.DOWN);
+			if (Input.pressed("left")) 	moveQueue.push(Key.LEFT);
+			if (Input.pressed("up")) 	moveQueue.push(Key.UP);
+			if (Input.pressed("down")) 	moveQueue.push(Key.DOWN);
 			
 			var dx:int;
 			var dy:int;
@@ -71,8 +70,6 @@ package
 				}
 			}
 			
-			var newMove:Boolean = (direction == null);
-
 			if (dx < 0) direction = "left";
 			else if (dx > 0) direction = "right";
 			else if (dy < 0) direction = "up";
