@@ -9,6 +9,9 @@ package
 	 */
 	public class GameWorld extends World 
 	{
+		private var playerStartX:Number;
+		private var playerStartY:Number;
+		
 		public var player:Player;
 		
 		public function GameWorld( levelData:LevelData ) 
@@ -23,16 +26,27 @@ package
 					
 					switch(foundTile)
 					{
-					case 0: break;
-					case 1: add( new Wall( c*Main.TW, r*Main.TW ) );
+						case 0: break;
+						case 1: 
+							add( new Wall( c * Main.TW, r * Main.TW ) );
+							break;
+						case 2: 
+							playerStartX = c * Main.TW; playerStartY = r * Main.TW; 
+							break;
+						case 3: 
+							add( new Monster( c * Main.TW + Main.TW / 2, r * Main.TW + Main.TW / 2 ) ); 
+							break;
+						case 4: 
+							add( new Goal( c * Main.TW, r * Main.TW ) ); 
+							break;
+						default: trace( "Unknown Tile Type: " + foundTile + " at " + c + " " + r );
 					}
 				}
 			}
 			
-			player = new Player();
+			player = new Player( playerStartX + Main.TW / 2, playerStartY + Main.TW / 2 );
 			
 			add(player);
-			add(new Monster());
 		}
 		
 		override public function update():void

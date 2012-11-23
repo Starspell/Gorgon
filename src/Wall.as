@@ -14,7 +14,8 @@ package
 		public function Wall( startX:Number, startY:Number ) 
 		{
 			super( startX, startY, new Image(WALL) );
-			
+
+			setHitbox(Main.TW, Main.TW);
 			type = "wall";
 		}
 		
