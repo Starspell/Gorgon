@@ -11,7 +11,7 @@ package
 	
 	public class Editor extends World
 	{
-		[Embed(source="images/tiles.png")]
+		[Embed(source="../assets/sprites/tiles.png")]
 		public static const EditTilesGfx: Class;
 		
 		public static var editTile:Spritemap = new Spritemap(EditTilesGfx, Main.TW, Main.TW);

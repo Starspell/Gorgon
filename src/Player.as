@@ -35,6 +35,7 @@ package
 			
 			playerImage = new Image(PLAYER);
 			playerImage.centerOO();
+			setHitbox(Main.TW, Main.TW, playerImage.width / 2, playerImage.height / 2);
 			
 			super(startX, startY, playerImage);
 		}
@@ -78,6 +79,11 @@ package
 					}
 					return;
 				}
+			}
+			
+			if ( collide("wall", x + dx * Main.TW, y + dy * Main.TW ) )
+			{
+				return;
 			}
 			
 			if (dx < 0) direction = "left";

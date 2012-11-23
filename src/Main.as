@@ -26,7 +26,7 @@ package
 		{
 			Editor.init();
 			CopyPaste.init(stage, pasteCallback);
-			FP.world = new GameWorld( new LevelData("AeNpjZEQFDMhgxHNRAQAn+QBD") );
+			FP.world = new GameWorld( new LevelData("AeNpjZEQFDGDABKFgXIYRxmVmgXJRAQAqwgBM") );
 		}
 		
 		public function pasteCallback (data:String): void
