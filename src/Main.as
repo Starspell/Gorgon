@@ -1,4 +1,4 @@
-package 
+package
 {
 	import net.flashpunk.*;
 	
@@ -22,7 +22,7 @@ package
 		{
 			Editor.init();
 			CopyPaste.init(stage, pasteCallback);
-			FP.world = new Editor;
+			FP.world = new GameWorld();
 		}
 		
 		public function pasteCallback (data:String): void
