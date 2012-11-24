@@ -70,6 +70,9 @@ package
 						case 6:
 							e = new ChargingMonster( ix * Main.TW + Main.TW / 2, iy * Main.TW + Main.TW / 2 ); 
 							break;
+						case 7:
+							e = new SmellingMonster( ix * Main.TW + Main.TW / 2, iy * Main.TW + Main.TW / 2 );
+							break;
 						default: trace( "Unknown Tile Type: " + foundTile + " at " + ix + " " + iy );
 					}
 					
