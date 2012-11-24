@@ -52,6 +52,7 @@ package
 				if ( shakeTimer < shakeInterval )
 				{
 					currentShake = ( (shakeInterval - shakeTimer) / shakeInterval ) * shakeMag;
+					currentShake = int( currentShake );
 					
 					var rand:Number = Math.random();
 					
