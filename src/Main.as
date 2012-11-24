@@ -26,9 +26,10 @@ package
 		
 		public override function init ():void
 		{
+			LevelList.init();
 			Editor.init();
 			CopyPaste.init(stage, pasteCallback);
-			FP.world = new GameWorld( new LevelData(Main.so.data.editState || "") );
+			FP.world = new GameWorld(1);
 		}
 		
 		public override function update ():void

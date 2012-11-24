@@ -28,8 +28,15 @@ package
 		public var scent2:BitmapData;
 		public var scentDebug:Image;
 		
-		public function GameWorld( levelData:LevelData ) 
+		public var id:int;
+		
+		public function GameWorld( id:int, levelData:LevelData = null ) 
 		{
+			this.id = id;
+			
+			if (! levelData) {
+				levelData = LevelList.levels[id];
+			}
 			var tiles:Tilemap = levelData.tiles;
 			
 			var foundTile:uint;

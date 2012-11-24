@@ -59,7 +59,7 @@ package
 			}
 			
 			if (Input.pressed(Key.E)) {
-				FP.world = new GameWorld(data);
+				FP.world = new GameWorld(0, data);
 				return;
 			}
 			
