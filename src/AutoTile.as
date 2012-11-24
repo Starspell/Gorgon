@@ -12,16 +12,15 @@ package
 	{
 		public static function chooseTiles (map:Tilemap, src:Tilemap):void
 		{
+			map.setRect(0, 0, map.columns, map.rows, 6*6);
+			
 			for ( var iy:int = 0; iy < src.rows; iy++ )
 			{
 				for ( var ix:int = 0; ix < src.columns; ix++ )
 				{
 					var tile:uint = src.getTile(ix,iy);
 					
-					if (tile == 0) {
-						map.setTile(ix, iy, 6*6);
-					}
-					else if (tile == 1) {
+					if (tile == 1) {
 						autoWall(src, map, ix, iy, 6*3);
 					}
 					else if (tile == 2) {
