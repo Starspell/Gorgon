@@ -20,7 +20,7 @@ package
 		{
 			super(320, 240, 60, false);
 			FP.screen.scale = 2;
-			//FP.console.enable();
+			FP.console.enable();
 			FP.console.toggleKey = Key.F1;
 		}
 		
@@ -28,7 +28,7 @@ package
 		{
 			Editor.init();
 			CopyPaste.init(stage, pasteCallback);
-			FP.world = new GameWorld( new LevelData(Main.so.data.editState) );
+			FP.world = new GameWorld( new LevelData(Main.so.data.editState || "") );
 		}
 		
 		public function pasteCallback (data:String): void
