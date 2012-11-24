@@ -45,9 +45,14 @@ package
 			editTile.frame = 1;
 		}
 		
+		public override function begin (): void
+		{
+			changed();
+		}
+		
 		public override function update (): void
 		{
-			Input.mouseCursor = "auto";
+			Input.mouseCursor = "arrow";
 			
 			if (Input.pressed(Key.SPACE)) {
 				togglePalette();

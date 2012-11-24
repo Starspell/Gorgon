@@ -31,6 +31,12 @@ package
 			FP.world = new GameWorld( new LevelData(Main.so.data.editState || "") );
 		}
 		
+		public override function update ():void
+		{
+			Input.mouseCursor = "hide";
+			super.update();
+		}
+		
 		public function pasteCallback (data:String): void
 		{
 			
