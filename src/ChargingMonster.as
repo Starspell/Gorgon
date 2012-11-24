@@ -60,6 +60,8 @@ package
 			sawPlayer = false;
 			shouldPause = true;
 			pauseTimer = 0;
+			
+			Main.startScreenShake();
 		}
 	}
 
