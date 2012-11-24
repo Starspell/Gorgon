@@ -1,6 +1,7 @@
 package  
 {
 	import net.flashpunk.Entity;
+	import net.flashpunk.graphics.Image;
 	
 	/**
 	 * ...
@@ -8,8 +9,6 @@ package
 	 */
 	public class Spikes extends Entity 
 	{
-		[Embed(source = '../assets/sprites/spikes.png')] private const SPIKE:Class;
-		
 		public function Spikes( startX:Number, startY:Number ) 
 		{
 			super( startX, startY );

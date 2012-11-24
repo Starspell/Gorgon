@@ -9,8 +9,6 @@ package
 	 */
 	public class Goal extends Entity 
 	{
-		[Embed(source = '../assets/sprites/goal.png')] private const GOAL:Class;
-		
 		public function Goal( startX:Number, startY:Number ) 
 		{
 			super( startX, startY );

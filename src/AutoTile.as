@@ -29,6 +29,9 @@ package
 					else if (tile == 4) {
 						map.setTile(ix, iy, 6*6+2);
 					}
+					else if (tile == 9) {
+						map.setTile(ix, iy, 6*6+3);
+					}
 				}
 			}
 		}
