@@ -40,7 +40,7 @@ package
 				if ( checkAllDirections )
 				{
 					checkAllDirections = false;
-					getSeeableDirection();
+					setDirectionToSeeablePlayer();
 					
 					if ( direction == "stop" )
 					{

@@ -15,7 +15,6 @@ package
 		
 		protected var canSeePlayer:Boolean = false;
 		protected var sawPlayer:Boolean = false;
-		protected var killsWithSight:Boolean = false;
 		
 		protected var monsterSight:BitmapData;
 		protected var monsterSightImage:Image;
@@ -49,8 +48,8 @@ package
 		{
 			var currentWorld:GameWorld = FP.world as GameWorld;
 			
-			var blockedByWallX:Number;
-			var blockedByWallY:Number;
+			var lineEndPointX:Number;
+			var lineEndPointY:Number;
 			
 			canSeePlayer = false;
 			
@@ -58,162 +57,69 @@ package
 			
 			if ( currentWorld )
 			{
-				var playerX:Number = currentWorld.player.x;
-				var playerY:Number = currentWorld.player.y;
-				
 				var directionToUse:String = direction == "stop" ? previousDir : direction;
 				
-				switch( directionToUse )
+				var blockingPoints:Array = SightManager.getPointsOfSight( x, y, directionToUse );
+				
+				for ( var i:int = 0; i < blockingPoints.length; i += 2 )
 				{
-					case "left":
-						for ( var i:int = x; i >= 0; i -= Main.TW )
+					// Stop use from seeing ourselves
+					if ( !(currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] ) == "monster" 
+							&& blockingPoints[i] == x && blockingPoints[i + 1] == y ) )
+					{
+						if ( currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] ) == "player" )
 						{
-							if ( currentWorld.collidePoint("wall", i, y) )
-							{
-								blockedByWallX = i;
-								blockedByWallY = y;
-								
-								i = -1;
-							}
-						}	
-						canSeePlayer = playerX < x && playerY == y && blockedByWallX < playerX;
-						break;
-					case "right":
-						for ( var j:int = x; j < FP.width; j += Main.TW )
-						{
-							if ( currentWorld.collidePoint("wall", j, y) )
-							{
-								blockedByWallX = j;
-								blockedByWallY = y;
-								
-								j = FP.width;
-							}
+							canSeePlayer = true;
+							
+							playerLastSeenAtX = blockingPoints[i];
+							playerLastSeenAtY = blockingPoints[i + 1];
 						}
-						canSeePlayer = playerX > x && playerY == y && blockedByWallX > playerX;
-						break;
-					case "up":
-						for ( var k:int = y; k >=0; k -= Main.TW )
-						{
-							if ( currentWorld.collidePoint("wall", x, k) )
-							{
-								blockedByWallX = x;
-								blockedByWallY = k;
-								
-								k = -1;
-							}
-						}
-						canSeePlayer = playerX == x && playerY < y && blockedByWallY < playerY;
-						break;
-					case "down":
-						for ( var l:int = y; l < FP.height; l += Main.TW )
-						{
-							if ( currentWorld.collidePoint("wall", x, l) )
-							{
-								blockedByWallX = x;
-								blockedByWallY = l;
-								
-								l = FP.height;
-							}
-						}
-						canSeePlayer = playerX == x && playerY > y && blockedByWallY > playerY;
-						break;
-					default:
-						canSeePlayer = false;
-						blockedByWallX = x;
-						blockedByWallY = y;
-						break;
+						
+						lineEndPointX = blockingPoints[i];
+						lineEndPointY = blockingPoints[i + 1];
+						
+						i = blockingPoints.length;
+					}
 				}
 				
-				if ( canSeePlayer )
-				{
-					playerLastSeenAtX = playerX;
-					playerLastSeenAtY = playerY;
-				}
-						
 				sawPlayer = sawPlayer || canSeePlayer;
-				currentWorld.showDeath = canSeePlayer && killsWithSight;
 			}
 			
 			Draw.setTarget( monsterSight );
-			Draw.line( x, y, int( blockedByWallX ), int( blockedByWallY ) );
+			Draw.line( x, y, int( lineEndPointX ), int( lineEndPointY ) );
 			monsterSightImage.updateBuffer();
 		}
-		
-		// Sets the direction of the monster so it can see the player
-		// if possible
-		public function getSeeableDirection():void
+	
+		public function setDirectionToSeeablePlayer():void
 		{
 			var currentWorld:GameWorld = FP.world as GameWorld;
 			
-			var blockedByWallX:Number;
-			var blockedByWallY:Number;
+			canSeePlayer = false;
 			
 			if ( currentWorld )
 			{
-				var playerX:Number = currentWorld.player.x;
-				var playerY:Number = currentWorld.player.y;
+				var blockingPoints:Array;
 					
 				for ( var d:int = 0; d < 4; d++ )
-				{
-					switch( direction )
+				{				
+					blockingPoints = SightManager.getPointsOfSight( x, y, direction );
+					
+					for ( var i:int = 0; i < blockingPoints.length; i += 2 )
 					{
-						case "left":
-							for ( var i:int = x; i >= 0; i -= Main.TW )
+						// Stop use from seeing ourselves
+						if ( !(currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] ) == "monster" 
+								&& blockingPoints[i] == x && blockingPoints[i + 1] == y ) )
+						{
+							if ( currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] ) == "player" )
 							{
-								if ( currentWorld.collidePoint("wall", i, y) )
-								{
-									blockedByWallX = i;
-									blockedByWallY = y;
-									
-									i = -1;
-								}
-							}	
-							canSeePlayer = playerX < x && playerY == y && blockedByWallX < playerX;
-							break;
-						case "right":
-							for ( var j:int = x; j < FP.width; j += Main.TW )
-							{
-								if ( currentWorld.collidePoint("wall", j, y) )
-								{
-									blockedByWallX = j;
-									blockedByWallY = y;
-									
-									j = FP.width;
-								}
+								canSeePlayer = true;
+								
+								playerLastSeenAtX = blockingPoints[i];
+								playerLastSeenAtY = blockingPoints[i + 1];
 							}
-							canSeePlayer = playerX > x && playerY == y && blockedByWallX > playerX;
-							break;
-						case "up":
-							for ( var k:int = y; k >=0; k -= Main.TW )
-							{
-								if ( currentWorld.collidePoint("wall", x, k) )
-								{
-									blockedByWallX = x;
-									blockedByWallY = k;
-									
-									k = -1;
-								}
-							}
-							canSeePlayer = playerX == x && playerY < y && blockedByWallY < playerY;
-							break;
-						case "down":
-							for ( var l:int = y; l < FP.height; l += Main.TW )
-							{
-								if ( currentWorld.collidePoint("wall", x, l) )
-								{
-									blockedByWallX = x;
-									blockedByWallY = l;
-									
-									l = FP.height;
-								}
-							}
-							canSeePlayer = playerX == x && playerY > y && blockedByWallY > playerY;
-							break;
-						default:
-							canSeePlayer = false;
-							blockedByWallX = x;
-							blockedByWallY = y;
-							break;
+							
+							i = blockingPoints.length;
+						}
 					}
 					
 					if ( canSeePlayer )
@@ -241,8 +147,6 @@ package
 					}
 				}
 			}
-			
-			direction = "stop";
 		}
 	}
 

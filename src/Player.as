@@ -24,6 +24,7 @@ package
 		
 		public var moveQueue:Array = [];
 		public var direction:String;
+		public var previousDir:String;
 		
 		public var hasMoved:Boolean = false;
 		
@@ -39,6 +40,8 @@ package
 			playerImage.centerOO();
 			setHitbox(Main.TW, Main.TW, playerImage.width / 2, playerImage.height / 2);
 			
+			type = "player";
+			
 			super(startX, startY, playerImage);
 		}
 		
@@ -51,6 +54,10 @@ package
 		override public function update():void
 		{
 			var currentWorld:GameWorld = FP.world as GameWorld;
+			
+			updateSight();
+			
+			if ( direction ) previousDir = direction;
 			
 			if (Input.pressed("right")) moveQueue.push(Key.RIGHT);
 			if (Input.pressed("left")) 	moveQueue.push(Key.LEFT);
@@ -71,7 +78,7 @@ package
 			
 			if ( !canMove ) return;
 			
-			if ( collide( "spike", x, y ) )
+			if ( collide( "spike", x, y ) || collide( "gorgon", x, y ) )
 			{
 				if ( currentWorld )
 				{
@@ -132,18 +139,27 @@ package
 			FP.tween(this, {x: x+dx*Main.TW, y:y+dy*Main.TW}, tweenTime, {tweener: FP.tweener, complete: moveDone});
 		}
 		
-		override public function render():void
+		private function updateSight():void
 		{
-			super.render();
-		}
-		
-		public function directionsAreOpposite( d1:String, d2:String ):Boolean
-		{
-			if ( (d1 == "left" && d2 == "right") || (d2 == "left" && d1 == "right") ) return true;
-				
-			if ( (d1 == "up" && d2 == "down") || (d2 == "up" && d1 == "down") ) return true;
+			var currentWorld:GameWorld = FP.world as GameWorld;
 			
-			return false;
+			if ( currentWorld )
+			{
+				var directionToUse:String = !direction ? previousDir : direction;
+				
+				var blockingPoints:Array = SightManager.getPointsOfSight( x, y, directionToUse );
+				
+				for ( var i:int = 0; i < blockingPoints.length; i += 2 )
+				{
+					if ( currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] ) == "gorgon" )
+					{
+						currentWorld.showDeath = true;
+						return;
+					}
+				}
+			}
+			
+			currentWorld.showDeath = false;
 		}
 	}
 

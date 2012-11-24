@@ -108,6 +108,9 @@ package
 							}
 							e = new Mirror(ix, iy, mirrorDir);
 							break;
+						case 11:
+							e = new Gorgon( ix * Main.TW + Main.TW / 2, iy * Main.TW + Main.TW / 2 );
+							break;
 						default: trace( "Unknown Tile Type: " + foundTile + " at " + ix + " " + iy );
 					}
 					
@@ -227,6 +230,19 @@ package
 			if (scentDebug.visible) {
 				scentDebug.updateBuffer();
 			}
+		}
+		
+		public function getTypeAt( posX:int, posY:int ):String
+		{
+			if ( collidePoint( "wall", posX, posY ) ) return "wall";
+			
+			if ( collidePoint( "monster", posX, posY ) ) return "monster";
+			
+			if ( collidePoint( "player", posX, posY ) ) return "player";
+			
+			if ( collidePoint( "gorgon", posX, posY ) ) return "gorgon";
+			
+			return null;
 		}
 	}
 
