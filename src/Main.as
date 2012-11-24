@@ -8,12 +8,21 @@ package
 	[SWF(width = "640", height = "480", backgroundColor="#000000")]
 	public class Main extends Engine
 	{
-		public static var TW:int = 16;
+		private static const shakeMag:Number = 3;
+		private const shakeInterval:Number = 1;
 		
-		public static var devMode:Boolean = true;
+		private static var shakeScreen:Boolean = false;
+		private static var shakeTimer:Number = 0;
+		private static var currentShake:Number = 0;
+		
+		private static var cameraX:Number;
+		private static var cameraY:Number;
 		
 		private var editor:Editor;
 		
+		public static var TW:int = 16;
+		
+		public static var devMode:Boolean = true;
 		public static const so:SharedObject = SharedObject.getLocal("draknek/gorgon", "/");
 		
 		public function Main()
@@ -35,12 +44,46 @@ package
 		public override function update ():void
 		{
 			Input.mouseCursor = "hide";
+		
+			if ( shakeScreen )
+			{
+				shakeTimer += FP.elapsed;
+				
+				if ( shakeTimer < shakeInterval )
+				{
+					currentShake = ( (shakeInterval - shakeTimer) / shakeInterval ) * shakeMag;
+					
+					var rand:Number = Math.random();
+					
+					if ( rand < 0.25 ) 		FP.camera.x = cameraX - currentShake;
+					else if ( rand < 0.5 ) 	FP.camera.x = cameraX + currentShake;
+					else if ( rand < 0.75 ) FP.camera.y = cameraY - currentShake;
+					else if ( rand < 1.0 )	FP.camera.y = cameraX + currentShake;
+				}
+				else
+				{
+					shakeScreen = false;
+					FP.camera.x = cameraX;
+					FP.camera.y = cameraY;
+				}
+			}
+			
 			super.update();
 		}
 		
 		public function pasteCallback (data:String): void
 		{
 			
+		}
+		
+		public static function startScreenShake():void
+		{
+			shakeScreen = true;
+			shakeTimer = 0;
+			currentShake = shakeMag;
+			
+			cameraX = FP.camera.x;
+			cameraY = FP.camera.y;
 		}
 	}
 }

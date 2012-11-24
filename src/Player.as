@@ -60,15 +60,6 @@ package
 			var m:Monster = collide("monster", x, y) as Monster;
 			var crashing:Boolean;
 			
-			/*if ( m && m.canMove )
-			{
-				if( direction != null && m.direction != null )
-				{
-					crashing = directionsAreOpposite(direction, m.direction);
-				}
-				trace ( "Crashing " + crashing + " PDir: " + direction + " MDir: " + m.direction );
-			}*/
-			
 			if ( (m && m.canMove) )
 			{
 				if ( currentWorld )
