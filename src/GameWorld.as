@@ -54,6 +54,7 @@ package
 			
 			var wall:Entity = new Entity(0, 0, staticTiles, wallMask);
 			wall.type = "wall";
+			wall.layer = 100;
 			
 			for ( var iy:int = 0; iy < tiles.rows; iy++ )
 			{
