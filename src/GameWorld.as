@@ -15,7 +15,11 @@ package
 		private var playerStartX:Number;
 		private var playerStartY:Number;
 		
+		private var deathText:Text;
+		private var deathTextEntity:Entity;
+		
 		public var player:Player;
+		public var showDeath:Boolean = false;
 		
 		public var monsters:Array = [];
 		
@@ -52,6 +56,9 @@ package
 						case 4: 
 							e = new Goal( c * Main.TW, r * Main.TW ); 
 							break;
+						case 5:
+							e = new MonsterWithSight( c * Main.TW + Main.TW / 2, r * Main.TW + Main.TW / 2 ); 
+							break;
 						default: trace( "Unknown Tile Type: " + foundTile + " at " + c + " " + r );
 					}
 					
@@ -75,8 +82,11 @@ package
 			scentDebug = new Image(scent);
 			scentDebug.scale = Main.TW;
 			scentDebug.alpha = 0.5;
-			
 			//addGraphic(scentDebug);
+
+			deathText = new Text("If you see this you are DEAD");
+			deathTextEntity = new Entity(0, 120, deathText);
+			add( deathTextEntity );
 		}
 		
 		override public function update():void
@@ -88,6 +98,15 @@ package
 			if ( Input.pressed( Key.E ) )
 			{
 				FP.world = new Editor();
+			}
+			
+			if ( showDeath )
+			{
+				Image(deathTextEntity.graphic).alpha = 1.0;
+			}
+			else
+			{
+				Image(deathTextEntity.graphic).alpha = 0.0;
 			}
 		}
 		

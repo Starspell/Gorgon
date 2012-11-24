@@ -12,11 +12,9 @@ package
 		[Embed(source = '../assets/sprites/monster.png')] private const MONSTER:Class;
 		
 		private const maxSpeed:Number = 1.5;
-		private const timeToChangeDir:Number = 1;
 		private const tweenTime:Number = 30;
 		
-		private var monsterImage:Image;
-		private var dirTimer:Number;
+		protected var monsterImage:Image;
 		
 		public var canMove:Boolean = true;
 		
@@ -27,7 +25,6 @@ package
 		{
 			monsterImage = new Image(MONSTER);
 			
-			dirTimer = timeToChangeDir;
 			direction = "stop";
 			type = "monster";
 			
