@@ -35,6 +35,11 @@ package
 			this.id = id;
 			
 			if (! levelData) {
+				if ( id >= LevelList.levels.length )
+				{
+					id = 1;
+				}
+				
 				levelData = LevelList.levels[id];
 			}
 			var tiles:Tilemap = levelData.tiles;
