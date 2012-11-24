@@ -100,6 +100,7 @@ package
 
 			deathText = new Text("If you see this you are DEAD");
 			deathTextEntity = new Entity(0, 120, deathText);
+			deathTextEntity.visible = false;
 			add( deathTextEntity );
 		}
 		
@@ -119,14 +120,7 @@ package
 				scentDebug.visible = ! scentDebug.visible;
 			}
 			
-			if ( showDeath )
-			{
-				Image(deathTextEntity.graphic).alpha = 1.0;
-			}
-			else
-			{
-				Image(deathTextEntity.graphic).alpha = 0.0;
-			}
+			deathTextEntity.visible = showDeath;
 		}
 		
 		public function updateScent ():void
