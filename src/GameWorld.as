@@ -13,6 +13,9 @@ package
 	 */
 	public class GameWorld extends World 
 	{
+		[Embed(source="../assets/sprites/static-tiles.png")]
+		public static const StaticTilesGfx: Class;
+		
 		private var playerStartX:Number;
 		private var playerStartY:Number;
 		
@@ -42,9 +45,9 @@ package
 			var foundTile:uint;
 			
 			var wallMask:Grid = new Grid(FP.width, FP.height, Main.TW, Main.TW);
-			var wallTiles:Tilemap = new Tilemap(Editor.EditTilesGfx, FP.width, FP.height, Main.TW, Main.TW);
+			var staticTiles:Tilemap = new Tilemap(StaticTilesGfx, FP.width, FP.height, Main.TW, Main.TW);
 			
-			var wall:Entity = new Entity(0, 0, wallTiles, wallMask);
+			var wall:Entity = new Entity(0, 0, staticTiles, wallMask);
 			wall.type = "wall";
 			
 			for ( var iy:int = 0; iy < tiles.rows; iy++ )
@@ -60,7 +63,6 @@ package
 						case 0: break;
 						case 1: 
 							wallMask.setTile(ix, iy, true);
-							wallTiles.setTile(ix, iy, foundTile);
 							break;
 						case 2: 
 							playerStartX = ix * Main.TW; playerStartY = iy * Main.TW; 
@@ -92,6 +94,8 @@ package
 					}
 				}
 			}
+			
+			AutoTile.chooseTiles(staticTiles, levelData.tiles);
 			
 			add(wall);
 			
