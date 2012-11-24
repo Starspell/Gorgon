@@ -13,6 +13,7 @@ package
 		
 		protected const tweenTime:Number = 30;
 		protected const rotInterval:Number = 2;
+		protected const shortRotInterval:Number = 0.5;
 		
 		protected var monsterImage:Image;
 		protected var rotTimer:Number = 0;
@@ -123,13 +124,13 @@ package
 			FP.tween(this, {x: x+dx*Main.TW, y:y+dy*Main.TW}, tweeningTime, {tweener: FP.tweener, complete: moveDone});
 		}
 		
-		public function rotateOnSpot():void
+		public function rotateOnSpot( rotationInt:Number = rotInterval ):void
 		{
 			rotTimer += FP.elapsed;
 			
-			if ( rotTimer > rotInterval )
+			if ( rotTimer > rotationInt )
 			{
-				rotTimer -= rotInterval;
+				rotTimer -= rotationInt;
 				previousDir = direction;
 				
 				switch( direction )

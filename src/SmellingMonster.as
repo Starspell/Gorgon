@@ -10,7 +10,7 @@ package
 	{
 		[Embed(source = '../assets/sprites/smellingmonster.png')] private const SMELLING:Class;
 		
-		private const smellingTween:Number = 15;
+		private const smellingTween:Number = 20;
 		
 		public function SmellingMonster( startX:Number, startY:Number ) 
 		{
@@ -19,6 +19,8 @@ package
 			monsterImage = new Image(SMELLING);
 			monsterImage.centerOO();
 			graphic = monsterImage;
+			
+			isStatic = true;
 		}
 		
 		override public function update():void
