@@ -48,6 +48,16 @@ package
 		
 		override public function update():void
 		{
+			if ( collide("goal", x, y ) )
+			{
+				var currentWorld:GameWorld = FP.world as GameWorld;
+				if ( currentWorld )
+				{
+					FP.world = new GameWorld( currentWorld.id + 1 );
+				}
+				return;
+			}
+			
 			if (Input.pressed("right")) moveQueue.push(Key.RIGHT);
 			if (Input.pressed("left")) 	moveQueue.push(Key.LEFT);
 			if (Input.pressed("up")) 	moveQueue.push(Key.UP);

@@ -19,12 +19,14 @@ package
 		
 		public var moveQueue:Array = [];
 		public var direction:String;
+		public var previousDir:String;
 		
 		public function Monster( startX:Number = 170, startY:Number = 120 ) 
 		{
 			monsterImage = new Image(MONSTER);
 			
 			direction = "stop";
+			previousDir = "stop";
 			type = "monster";
 			
 			monsterImage.centerOO();
@@ -48,6 +50,11 @@ package
 			if ( !canMove ) return;
 			
 			var randNo:Number = Math.random();
+			
+			if ( direction != "stop" )
+			{
+				previousDir = direction;
+			}
 		
 			if (randNo < 1.0) 	direction = "left";
 			if (randNo < 0.8) 	direction = "right";
@@ -83,6 +90,8 @@ package
 			
 			if (direction != "stop") 
 			{
+				previousDir = direction;
+				
 				dx = int(direction == "right") 	- int(direction == "left");
 				dy = int(direction == "down") 	- int(direction == "up");
 			}
