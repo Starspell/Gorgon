@@ -13,7 +13,7 @@ package
 		
 		public function Goal( startX:Number, startY:Number ) 
 		{
-			super( startX, startY, new Image(GOAL) );
+			super( startX, startY );
 			
 			type = "goal";
 			setHitbox(Main.TW, Main.TW);
