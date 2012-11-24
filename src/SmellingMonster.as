@@ -10,6 +10,8 @@ package
 	{
 		[Embed(source = '../assets/sprites/smellingmonster.png')] private const SMELLING:Class;
 		
+		private const smellingTween:Number = 20;
+		
 		public function SmellingMonster( startX:Number, startY:Number ) 
 		{
 			super( startX, startY );
@@ -67,7 +69,7 @@ package
 				else
 				{
 					direction = greatestSmellDir;
-					moveWithDirection();
+					moveWithDirection( smellingTween );
 				}
 			}
 		}

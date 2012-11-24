@@ -140,6 +140,12 @@ package
 		
 		public function updateScent ():void
 		{
+			if ( !player.hasMoved )
+			{
+				scent.fillRect( scent.rect, 0 );
+				return;
+			}
+			
 			scent.setPixel(player.centerX/Main.TW, player.centerY/Main.TW, 255);
 			
 			var e:Entity;

@@ -25,6 +25,8 @@ package
 		public var moveQueue:Array = [];
 		public var direction:String;
 		
+		public var hasMoved:Boolean = false;
+		
 		public function Player( startX:Number = 170, startY:Number = 120 ) 
 		{
 			// Defining input groups
@@ -48,12 +50,22 @@ package
 		
 		override public function update():void
 		{
-			if ( collide("goal", x, y ) )
+			var currentWorld:GameWorld = FP.world as GameWorld;
+			
+			if ( collide("goal", x, y) )
 			{
-				var currentWorld:GameWorld = FP.world as GameWorld;
 				if ( currentWorld )
 				{
 					FP.world = new GameWorld( currentWorld.id + 1 );
+				}
+				return;
+			}
+			
+			if ( collide("monster", x, y) )
+			{
+				if ( currentWorld )
+				{
+					FP.world = new GameWorld( currentWorld.id );
 				}
 				return;
 			}
@@ -70,6 +82,8 @@ package
 			
 			if (moveQueue.length) 
 			{
+				if ( !hasMoved ) hasMoved = true;
+				
 				var key:uint = moveQueue.shift();
 
 				dx = int(key == Key.RIGHT) - int(key == Key.LEFT);

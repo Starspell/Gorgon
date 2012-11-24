@@ -10,6 +10,12 @@ package
 	{
 		[Embed(source = '../assets/sprites/chargingmonster.png')] private const CHARGING:Class;
 		
+		private const chargingTweenTime:Number = 10;
+		private const pauseTime:Number = 1;		
+		
+		private var shouldPause:Boolean = true;
+		private var pauseTimer:Number = 0;
+		
 		public function ChargingMonster( startX:Number, startY:Number ) 
 		{
 			super( startX, startY );
@@ -18,25 +24,42 @@ package
 			monsterImage.centerOO();
 			graphic = monsterImage;
 			addGraphic(monsterSightImage);
+			
+			isStatic = true;
+			
+			direction = "up";
 		}
 		
 		override public function update():void
 		{
-			updateSight();
-				
 			if ( !canSeePlayer && !sawPlayer )
 			{
 				super.update();
 			}
 			else
 			{
-				moveWithDirection();
+				// Pause before charging
+				if ( shouldPause )
+				{
+					pauseTimer += FP.elapsed;
+					if ( pauseTimer > pauseTime )
+					{
+						shouldPause = false;
+					}
+				}
+				else
+				{
+					updateSight();
+					moveWithDirection( chargingTweenTime );
+				}
 			}
 		}
 		
 		override protected function hitWall():void
 		{
 			sawPlayer = false;
+			shouldPause = true;
+			pauseTimer = 0;
 		}
 	}
 

@@ -12,14 +12,19 @@ package
 		[Embed(source = '../assets/sprites/monster.png')] private const MONSTER:Class;
 		
 		protected const tweenTime:Number = 30;
+		protected const rotInterval:Number = 2;
 		
 		protected var monsterImage:Image;
+		protected var rotTimer:Number = 0;
 		
 		public var canMove:Boolean = true;
 		
 		public var moveQueue:Array = [];
 		public var direction:String;
 		public var previousDir:String;
+		
+		// Can we move or do we just rotate
+		public var isStatic:Boolean = false;
 		
 		public function Monster( startX:Number = 170, startY:Number = 120 ) 
 		{
@@ -42,7 +47,15 @@ package
 		
 		override public function update():void
 		{
-			moveRandomly();
+			if ( !isStatic )
+			{
+				rotTimer = 0;
+				moveRandomly();
+			}
+			else
+			{
+				rotateOnSpot();
+			}
 		}
 		
 		protected function moveRandomly():void
@@ -81,20 +94,23 @@ package
 			FP.tween(this, {x: x+dx*Main.TW, y:y+dy*Main.TW}, tweenTime, {tweener: FP.tweener, complete: moveDone});
 		}
 		
-		public function moveWithDirection():void
+		public function moveWithDirection( tweeningTime:Number = tweenTime ):void
 		{
 			if ( !canMove ) return;
 			
 			var dx:int;
 			var dy:int;
 			
+			var directionToUse:String = direction;
+			
 			if (direction != "stop") 
 			{
 				previousDir = direction;
-				
-				dx = int(direction == "right") 	- int(direction == "left");
-				dy = int(direction == "down") 	- int(direction == "up");
+				directionToUse = previousDir;
 			}
+			
+			dx = int(directionToUse == "right") - int(directionToUse == "left");
+			dy = int(directionToUse == "down") 	- int(directionToUse == "up");
 			
 			if ( collide("wall", x + dx * Main.TW, y + dy * Main.TW ) )
 			{
@@ -104,7 +120,37 @@ package
 			
 			canMove = false;
 			
-			FP.tween(this, {x: x+dx*Main.TW, y:y+dy*Main.TW}, tweenTime*FP.elapsed, {tweener: FP.tweener, complete: moveDone});
+			FP.tween(this, {x: x+dx*Main.TW, y:y+dy*Main.TW}, tweeningTime, {tweener: FP.tweener, complete: moveDone});
+		}
+		
+		public function rotateOnSpot():void
+		{
+			rotTimer += FP.elapsed;
+			
+			if ( rotTimer > rotInterval )
+			{
+				rotTimer -= rotInterval;
+				previousDir = direction;
+				
+				switch( direction )
+				{
+					case "up":
+						direction = "right";
+						break;
+					case "right":
+						direction = "down";
+						break;
+					case "down":
+						direction = "left";
+						break;
+					case "left":
+						direction = "up";
+						break;
+					default:
+						direction = "up";
+						break;
+				}
+			}
 		}
 		
 		protected function hitWall():void
