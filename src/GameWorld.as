@@ -38,7 +38,7 @@ package
 			this.id = _id;
 			
 			if (! levelData) {
-				if (id == 0) {
+				if (id <= 0) {
 					id = LevelList.levels.length - 1;
 				}
 				
@@ -94,6 +94,9 @@ package
 							break;
 						case 8:
 							e = new SeekingMonster( ix * Main.TW + Main.TW / 2, iy * Main.TW + Main.TW / 2 );
+							break;
+						case 9:
+							add( new Spikes( ix * Main.TW, iy * Main.TW ) );
 							break;
 						default: trace( "Unknown Tile Type: " + foundTile + " at " + ix + " " + iy );
 					}

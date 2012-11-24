@@ -61,7 +61,7 @@ package
 				return;
 			}
 			
-			if ( collide("monster", x, y) )
+			if ( collide("monster", x, y) || collide( "spike", x, y ) )
 			{
 				if ( currentWorld )
 				{
