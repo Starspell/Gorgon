@@ -96,7 +96,17 @@ package
 							e = new SeekingMonster( ix * Main.TW + Main.TW / 2, iy * Main.TW + Main.TW / 2 );
 							break;
 						case 9:
-							add( new Spikes( ix * Main.TW, iy * Main.TW ) );
+							e = new Spikes( ix * Main.TW, iy * Main.TW );
+							break;
+						case 10:
+							var mirrorDir:int = 0;
+							if (tiles.getTile(ix-1,iy) != 1) {
+								mirrorDir += 1;
+							}
+							if (tiles.getTile(ix,iy-1) != 1) {
+								mirrorDir += 2;
+							}
+							e = new Mirror(ix, iy, mirrorDir);
 							break;
 						default: trace( "Unknown Tile Type: " + foundTile + " at " + ix + " " + iy );
 					}
