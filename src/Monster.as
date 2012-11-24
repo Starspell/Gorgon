@@ -73,6 +73,35 @@ package
 			
 			FP.tween(this, {x: x+dx*Main.TW, y:y+dy*Main.TW}, tweenTime*FP.elapsed, {tweener: FP.tweener, complete: moveDone});
 		}
+		
+		public function moveWithDirection():void
+		{
+			if ( !canMove ) return;
+			
+			var dx:int;
+			var dy:int;
+			
+			if (direction != "stop") 
+			{
+				dx = int(direction == "right") 	- int(direction == "left");
+				dy = int(direction == "down") 	- int(direction == "up");
+			}
+			
+			if ( collide("wall", x + dx * Main.TW, y + dy * Main.TW ) )
+			{
+				hitWall();
+				return;
+			}
+			
+			canMove = false;
+			
+			FP.tween(this, {x: x+dx*Main.TW, y:y+dy*Main.TW}, tweenTime*FP.elapsed, {tweener: FP.tweener, complete: moveDone});
+		}
+		
+		protected function hitWall():void
+		{
+			
+		}
 	}
 
 }

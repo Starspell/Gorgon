@@ -32,28 +32,9 @@ package
 			}
 		}
 		
-		public function moveWithDirection():void
+		override protected function hitWall():void
 		{
-			if ( !canMove ) return;
-			
-			var dx:int;
-			var dy:int;
-			
-			if (direction != "stop") 
-			{
-				dx = int(direction == "right") 	- int(direction == "left");
-				dy = int(direction == "down") 	- int(direction == "up");
-			}
-			
-			if ( collide("wall", x + dx * Main.TW, y + dy * Main.TW ) )
-			{
-				sawPlayer = false;
-				return;
-			}
-			
-			canMove = false;
-			
-			FP.tween(this, {x: x+dx*Main.TW, y:y+dy*Main.TW}, tweenTime*FP.elapsed, {tweener: FP.tweener, complete: moveDone});
+			sawPlayer = false;
 		}
 	}
 
