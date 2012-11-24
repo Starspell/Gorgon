@@ -47,6 +47,9 @@ package
 						case 5:
 							add( new MonsterWithSight( c * Main.TW + Main.TW / 2, r * Main.TW + Main.TW / 2 ) ); 
 							break;
+						case 6:
+							add( new ChargingMonster( c * Main.TW + Main.TW / 2, r * Main.TW + Main.TW / 2 ) ); 
+							break;
 						default: trace( "Unknown Tile Type: " + foundTile + " at " + c + " " + r );
 					}
 				}

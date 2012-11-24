@@ -11,6 +11,10 @@ package
 	{
 		[Embed(source = '../assets/sprites/monsterwithsight.png')] private const MONSTERSIGHT:Class;
 		
+		protected var canSeePlayer:Boolean = false;
+		protected var sawPlayer:Boolean = false;
+		protected var killsWithSight:Boolean = false;
+		
 		public function MonsterWithSight( startX:Number = 170, startY:Number = 120 ) 
 		{
 			super( startX, startY );
@@ -24,29 +28,35 @@ package
 		{
 			super.update();
 			
+			updateSight();
+		}
+		
+		protected function updateSight():void
+		{
 			var currentWorld:GameWorld = FP.world as GameWorld;
 			
-			var dead:Boolean = false;
+			canSeePlayer = false;
 			
 			if ( currentWorld )
 			{
-				switch(direction)
+				switch( direction )
 				{
 					case "left":
-						dead = currentWorld.player.x < x && currentWorld.player.y == y;
+						canSeePlayer = currentWorld.player.x < x && currentWorld.player.y == y;
 						break;
 					case "right":
-						dead = currentWorld.player.x > x && currentWorld.player.y == y;
+						canSeePlayer = currentWorld.player.x > x && currentWorld.player.y == y;
 						break;
 					case "up":
-						dead = currentWorld.player.x == x && currentWorld.player.y < y;
+						canSeePlayer = currentWorld.player.x == x && currentWorld.player.y < y;
 						break;
 					case "down":
-						dead = currentWorld.player.x == x && currentWorld.player.y > y;
+						canSeePlayer = currentWorld.player.x == x && currentWorld.player.y > y;
 						break;
 				}
 				
-				currentWorld.showDeath = dead;
+				sawPlayer = sawPlayer || canSeePlayer;
+				currentWorld.showDeath = canSeePlayer && killsWithSight;
 			}			
 		}
 	}

@@ -11,8 +11,7 @@ package
 	{
 		[Embed(source = '../assets/sprites/monster.png')] private const MONSTER:Class;
 		
-		private const maxSpeed:Number = 1.5;
-		private const tweenTime:Number = 30;
+		protected const tweenTime:Number = 30;
 		
 		protected var monsterImage:Image;
 		
@@ -34,13 +33,17 @@ package
 			super(startX, startY, monsterImage);
 		}
 		
-		private function moveDone(): void
+		protected function moveDone(): void
 		{
 			canMove = true;
-			direction = null;
 		}
 		
 		override public function update():void
+		{
+			moveRandomly();
+		}
+		
+		protected function moveRandomly():void
 		{
 			if ( !canMove ) return;
 			
