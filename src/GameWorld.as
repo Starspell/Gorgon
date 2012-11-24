@@ -33,11 +33,15 @@ package
 		
 		public var id:int;
 		
-		public function GameWorld( id:int, levelData:LevelData = null ) 
+		public function GameWorld( _id:int, levelData:LevelData = null ) 
 		{
-			this.id = id;
+			this.id = _id;
 			
 			if (! levelData) {
+				if (id == 0) {
+					id = LevelList.levels.length - 1;
+				}
+				
 				if ( id >= LevelList.levels.length )
 				{
 					id = 1;
@@ -135,9 +139,24 @@ package
 				FP.world = new Editor();
 			}
 			
-			if ( Main.devMode && Input.pressed( Key.F2 ) )
+			if ( Main.devMode)
 			{
-				scentDebug.visible = ! scentDebug.visible;
+				if ( Input.pressed( Key.F2 ) )
+				{
+					scentDebug.visible = ! scentDebug.visible;
+				}
+			
+				if ( Input.pressed( Key.PAGE_DOWN ) )
+				{
+					FP.world = new GameWorld(id+1);
+					return;
+				}
+			
+				if ( Input.pressed( Key.PAGE_UP ) )
+				{
+					FP.world = new GameWorld(id-1);
+					return;
+				}
 			}
 			
 			deathTextEntity.visible = showDeath;
