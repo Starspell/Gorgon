@@ -32,10 +32,12 @@ package
 		public var scentDebug:Image;
 		
 		public var id:int;
+		public var levelData:LevelData;
 		
-		public function GameWorld( _id:int, levelData:LevelData = null ) 
+		public function GameWorld( _id:int, _levelData:LevelData = null ) 
 		{
 			this.id = _id;
+			this.levelData = _levelData;
 			
 			if (! levelData) {
 				if (id <= 0) {
@@ -150,13 +152,19 @@ package
 			
 			updateScent();
 			
-			if ( Input.pressed( Key.E ) )
-			{
-				FP.world = new Editor();
-			}
-			
 			if ( Main.devMode)
 			{
+				if ( Input.pressed( Key.E ) )
+				{
+					if (! Input.check(Key.SHIFT)) {
+						Editor.data.fromString(levelData.toString());
+					
+						Editor.changed();
+					}
+					
+					FP.world = new Editor();
+				}
+			
 				if ( Input.pressed( Key.F2 ) )
 				{
 					scentDebug.visible = ! scentDebug.visible;

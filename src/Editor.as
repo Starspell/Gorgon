@@ -246,10 +246,10 @@ package
 			changed();
 		}
 		
-		private function changed (): void
+		public static function changed (): void
 		{
-			CopyPaste.data = getWorldData();
-			Main.so.data.editState = getWorldData();
+			CopyPaste.data = data.toString();
+			Main.so.data.editState = data.toString();
 		}
 	}
 }
