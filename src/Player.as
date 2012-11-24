@@ -52,16 +52,24 @@ package
 		{
 			var currentWorld:GameWorld = FP.world as GameWorld;
 			
-			if ( collide("goal", x, y) )
-			{
-				if ( currentWorld )
-				{
-					FP.world = new GameWorld( currentWorld.id + 1 );
-				}
-				return;
-			}
+			if (Input.pressed("right")) moveQueue.push(Key.RIGHT);
+			if (Input.pressed("left")) 	moveQueue.push(Key.LEFT);
+			if (Input.pressed("up")) 	moveQueue.push(Key.UP);
+			if (Input.pressed("down")) 	moveQueue.push(Key.DOWN);
 			
-			if ( collide("monster", x, y) || collide( "spike", x, y ) )
+			var m:Monster = collide("monster", x, y) as Monster;
+			var crashing:Boolean;
+			
+			/*if ( m && m.canMove )
+			{
+				if( direction != null && m.direction != null )
+				{
+					crashing = directionsAreOpposite(direction, m.direction);
+				}
+				trace ( "Crashing " + crashing + " PDir: " + direction + " MDir: " + m.direction );
+			}*/
+			
+			if ( (m && m.canMove) )
 			{
 				if ( currentWorld )
 				{
@@ -70,12 +78,25 @@ package
 				return;
 			}
 			
-			if (Input.pressed("right")) moveQueue.push(Key.RIGHT);
-			if (Input.pressed("left")) 	moveQueue.push(Key.LEFT);
-			if (Input.pressed("up")) 	moveQueue.push(Key.UP);
-			if (Input.pressed("down")) 	moveQueue.push(Key.DOWN);
-			
 			if ( !canMove ) return;
+			
+			if ( collide( "spike", x, y ) )
+			{
+				if ( currentWorld )
+				{
+					FP.world = new GameWorld( currentWorld.id );
+				}
+				return;
+			}
+			
+			if ( collide("goal", x, y) )
+			{
+				if ( currentWorld )
+				{
+					FP.world = new GameWorld( currentWorld.id + 1 );
+				}
+				return;
+			}
 			
 			var dx:int;
 			var dy:int;
@@ -123,6 +144,15 @@ package
 		override public function render():void
 		{
 			super.render();
+		}
+		
+		public function directionsAreOpposite( d1:String, d2:String ):Boolean
+		{
+			if ( (d1 == "left" && d2 == "right") || (d2 == "left" && d1 == "right") ) return true;
+				
+			if ( (d1 == "up" && d2 == "down") || (d2 == "up" && d1 == "down") ) return true;
+			
+			return false;
 		}
 	}
 
