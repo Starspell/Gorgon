@@ -45,16 +45,21 @@ package
 			editTile.frame = 1;
 		}
 		
+		public override function begin (): void
+		{
+			changed();
+		}
+		
 		public override function update (): void
 		{
-			Input.mouseCursor = "auto";
+			Input.mouseCursor = "arrow";
 			
 			if (Input.pressed(Key.SPACE)) {
 				togglePalette();
 			}
 			
 			if (Input.pressed(Key.E)) {
-				FP.world = new GameWorld(data);
+				FP.world = new GameWorld(0, data);
 				return;
 			}
 			

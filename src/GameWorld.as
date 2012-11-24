@@ -28,8 +28,15 @@ package
 		public var scent2:BitmapData;
 		public var scentDebug:Image;
 		
-		public function GameWorld( levelData:LevelData ) 
+		public var id:int;
+		
+		public function GameWorld( id:int, levelData:LevelData = null ) 
 		{
+			this.id = id;
+			
+			if (! levelData) {
+				levelData = LevelList.levels[id];
+			}
 			var tiles:Tilemap = levelData.tiles;
 			
 			var foundTile:uint;
@@ -98,14 +105,12 @@ package
 			scentDebug = new Image(scent);
 			scentDebug.scale = Main.TW;
 			scentDebug.alpha = 0.5;
-			if (true) {
-				scentDebug.visible = false;
-			} else {
-				addGraphic(scentDebug);
-			}
+			scentDebug.visible = false;
+			addGraphic(scentDebug);
 
 			deathText = new Text("If you see this you are DEAD");
 			deathTextEntity = new Entity(0, 120, deathText);
+			deathTextEntity.visible = false;
 			add( deathTextEntity );
 		}
 		
@@ -120,14 +125,12 @@ package
 				FP.world = new Editor();
 			}
 			
-			if ( showDeath )
+			if ( Main.devMode && Input.pressed( Key.F2 ) )
 			{
-				Image(deathTextEntity.graphic).alpha = 1.0;
+				scentDebug.visible = ! scentDebug.visible;
 			}
-			else
-			{
-				Image(deathTextEntity.graphic).alpha = 0.0;
-			}
+			
+			deathTextEntity.visible = showDeath;
 		}
 		
 		public function updateScent ():void
