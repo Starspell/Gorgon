@@ -10,8 +10,8 @@ package
 	{
 		[Embed(source = '../assets/sprites/chargingmonster.png')] private const CHARGING:Class;
 		
-		private const chargingTweenTime:Number = 10;
-		private const pauseTime:Number = 1;		
+		private const chargingTweenTime:Number = 6;
+		private const pauseTime:Number = 0.25;		
 		
 		private var shouldPause:Boolean = true;
 		private var pauseTimer:Number = 0;

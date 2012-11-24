@@ -132,23 +132,33 @@ package
 				rotTimer -= rotInterval;
 				previousDir = direction;
 				
-				switch( direction )
-				{
-					case "up":
-						direction = "right";
+				while (true) {
+					switch( direction )
+					{
+						case "up":
+							direction = "right";
+							break;
+						case "right":
+							direction = "down";
+							break;
+						case "down":
+							direction = "left";
+							break;
+						case "left":
+							direction = "up";
+							break;
+						default:
+							direction = "up";
+							break;
+					}
+					
+					var dx:int = int(direction == "right") 	- int(direction == "left");
+					var dy:int = int(direction == "down") 	- int(direction == "up");
+					
+					if ( ! collide("wall", x + dx * Main.TW, y + dy * Main.TW ) )
+					{
 						break;
-					case "right":
-						direction = "down";
-						break;
-					case "down":
-						direction = "left";
-						break;
-					case "left":
-						direction = "up";
-						break;
-					default:
-						direction = "up";
-						break;
+					}
 				}
 			}
 		}
