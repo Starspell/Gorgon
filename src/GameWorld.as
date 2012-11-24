@@ -2,6 +2,7 @@ package
 {
 	import net.flashpunk.*;
 	import net.flashpunk.graphics.*;
+	import net.flashpunk.masks.*;
 	import net.flashpunk.utils.*;
 	
 	import flash.display.*;
@@ -33,11 +34,17 @@ package
 			
 			var foundTile:uint;
 			
-			for ( var r:int = 0; r < tiles.rows; r++ )
+			var wallMask:Grid = new Grid(FP.width, FP.height, Main.TW, Main.TW);
+			var wallTiles:Tilemap = new Tilemap(Editor.EditTilesGfx, FP.width, FP.height, Main.TW, Main.TW);
+			
+			var wall:Entity = new Entity(0, 0, wallTiles, wallMask);
+			wall.type = "wall";
+			
+			for ( var iy:int = 0; iy < tiles.rows; iy++ )
 			{
-				for ( var c:int = 0; c < tiles.columns; c++ )
+				for ( var ix:int = 0; ix < tiles.columns; ix++ )
 				{
-					foundTile = tiles.getTile(c,r);
+					foundTile = tiles.getTile(ix,iy);
 					
 					var e:Entity = null;
 					
@@ -45,25 +52,26 @@ package
 					{
 						case 0: break;
 						case 1: 
-							e = new Wall( c * Main.TW, r * Main.TW );
+							wallMask.setTile(ix, iy, true);
+							wallTiles.setTile(ix, iy, foundTile);
 							break;
 						case 2: 
-							playerStartX = c * Main.TW; playerStartY = r * Main.TW; 
+							playerStartX = ix * Main.TW; playerStartY = iy * Main.TW; 
 							break;
 						case 3: 
-							e = new Monster( c * Main.TW + Main.TW / 2, r * Main.TW + Main.TW / 2 );
+							e = new Monster( ix * Main.TW + Main.TW / 2, iy * Main.TW + Main.TW / 2 );
 							break;
 						case 4: 
-							e = new Goal( c * Main.TW, r * Main.TW ); 
+							e = new Goal( ix * Main.TW, iy * Main.TW ); 
 							break;
 						case 5:
-							e = new MonsterWithSight( c * Main.TW + Main.TW / 2, r * Main.TW + Main.TW / 2 ); 
+							e = new MonsterWithSight( ix * Main.TW + Main.TW / 2, iy * Main.TW + Main.TW / 2 ); 
 							break;
 						case 6:
-							e = new ChargingMonster( c * Main.TW + Main.TW / 2, r * Main.TW + Main.TW / 2 ); 
+							e = new ChargingMonster( ix * Main.TW + Main.TW / 2, iy * Main.TW + Main.TW / 2 ); 
 							break;
 						case 7:
-							e = new SmellingMonster( c * Main.TW + Main.TW / 2, r * Main.TW + Main.TW / 2 );
+							e = new SmellingMonster( ix * Main.TW + Main.TW / 2, iy * Main.TW + Main.TW / 2 );
 							break;
 						default: trace( "Unknown Tile Type: " + foundTile + " at " + c + " " + r );
 					}
@@ -78,6 +86,8 @@ package
 				}
 			}
 			
+			add(wall);
+			
 			player = new Player( playerStartX + Main.TW / 2, playerStartY + Main.TW / 2 );
 			
 			add(player);
@@ -88,7 +98,11 @@ package
 			scentDebug = new Image(scent);
 			scentDebug.scale = Main.TW;
 			scentDebug.alpha = 0.5;
-			//addGraphic(scentDebug);
+			if (true) {
+				scentDebug.visible = false;
+			} else {
+				addGraphic(scentDebug);
+			}
 
 			deathText = new Text("If you see this you are DEAD");
 			deathTextEntity = new Entity(0, 120, deathText);
@@ -156,7 +170,9 @@ package
 				scent.setPixel(e.centerX/Main.TW, e.centerY/Main.TW, 0);
 			}
 			
-			scentDebug.updateBuffer();
+			if (scentDebug.visible) {
+				scentDebug.updateBuffer();
+			}
 		}
 	}
 
