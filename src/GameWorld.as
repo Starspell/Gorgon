@@ -95,11 +95,8 @@ package
 			scentDebug = new Image(scent);
 			scentDebug.scale = Main.TW;
 			scentDebug.alpha = 0.5;
-			if (true) {
-				scentDebug.visible = false;
-			} else {
-				addGraphic(scentDebug);
-			}
+			scentDebug.visible = false;
+			addGraphic(scentDebug);
 
 			deathText = new Text("If you see this you are DEAD");
 			deathTextEntity = new Entity(0, 120, deathText);
@@ -115,6 +112,11 @@ package
 			if ( Input.pressed( Key.E ) )
 			{
 				FP.world = new Editor();
+			}
+			
+			if ( Main.devMode && Input.pressed( Key.F2 ) )
+			{
+				scentDebug.visible = ! scentDebug.visible;
 			}
 			
 			if ( showDeath )
