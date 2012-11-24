@@ -60,7 +60,7 @@ package
 							e = new MonsterWithSight( c * Main.TW + Main.TW / 2, r * Main.TW + Main.TW / 2 ); 
 							break;
 						case 6:
-							add( new ChargingMonster( c * Main.TW + Main.TW / 2, r * Main.TW + Main.TW / 2 ) ); 
+							e = new ChargingMonster( c * Main.TW + Main.TW / 2, r * Main.TW + Main.TW / 2 ); 
 							break;
 						default: trace( "Unknown Tile Type: " + foundTile + " at " + c + " " + r );
 					}
@@ -85,7 +85,11 @@ package
 			scentDebug = new Image(scent);
 			scentDebug.scale = Main.TW;
 			scentDebug.alpha = 0.5;
-			//addGraphic(scentDebug);
+			if (true) {
+				scentDebug.visible = false;
+			} else {
+				addGraphic(scentDebug);
+			}
 
 			deathText = new Text("If you see this you are DEAD");
 			deathTextEntity = new Entity(0, 120, deathText);
@@ -153,7 +157,9 @@ package
 				scent.setPixel(e.centerX/Main.TW, e.centerY/Main.TW, 0);
 			}
 			
-			scentDebug.updateBuffer();
+			if (scentDebug.visible) {
+				scentDebug.updateBuffer();
+			}
 		}
 	}
 
