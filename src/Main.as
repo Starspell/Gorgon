@@ -33,6 +33,7 @@ package
 		{
 			super(320, 240, 60, true);
 			FP.screen.scale = 2;
+			FP.screen.color = 0x909090;
 			//FP.console.enable();
 			FP.console.toggleKey = Key.F1;
 		}
