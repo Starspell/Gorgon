@@ -62,6 +62,16 @@ package
 		{
 			var currentWorld:GameWorld = FP.world as GameWorld;
 			
+			if ( Input.pressed(Key.SPACE) )
+			{
+				playerDies();
+				if ( currentWorld )
+				{
+					FP.world = new GameWorld( currentWorld.id );
+				}
+				return;
+			}
+			
 			updateSight();
 			
 			if ( direction ) previousDir = direction;

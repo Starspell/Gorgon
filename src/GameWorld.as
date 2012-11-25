@@ -16,13 +16,18 @@ package
 		[Embed(source="../assets/sprites/static-tiles.png")]
 		public static const StaticTilesGfx: Class;
 		
+		[Embed(source="../assets/sprites/deathscreen.png")] private static const DEATHSCREEN:Class;
+		
 		[Embed(source = '../assets/audio/squelch2.mp3')] private static const SQUELCH:Class;
+		[Embed(source = '../assets/fonts/amiga4ever pro2.ttf', embedAsCFF = "false", fontFamily = 'My Font')] 
+		private const MY_FONT:Class;
 		
 		public static var squelchSound:Sfx = new Sfx(SQUELCH);
 		
 		private var playerStartX:Number;
 		private var playerStartY:Number;
 		
+		private var deathScreenEntity:Entity;
 		private var deathText:Text;
 		private var deathTextEntity:Entity;
 		
@@ -40,6 +45,8 @@ package
 		
 		public function GameWorld( _id:int, _levelData:LevelData = null ) 
 		{
+			Text.font = "My Font";
+			
 			this.id = _id;
 			this.levelData = _levelData;
 			
@@ -146,9 +153,13 @@ package
 			scentDebug.alpha = 0.5;
 			scentDebug.visible = false;
 			addGraphic(scentDebug);
+			
+			deathScreenEntity = new Entity(0, 0, new Image(DEATHSCREEN) );
+			deathScreenEntity.visible = false;
+			add( deathScreenEntity );
 
-			deathText = new Text("If you see this you are DEAD");
-			deathTextEntity = new Entity(0, 120, deathText);
+			deathText = new Text("You are dead\nPress space\n\nLook away...");
+			deathTextEntity = new Entity(75, 70, deathText);
 			deathTextEntity.visible = false;
 			add( deathTextEntity );
 		}
@@ -190,7 +201,7 @@ package
 				}
 			}
 			
-			deathTextEntity.visible = showDeath;
+			deathTextEntity.visible = deathScreenEntity.visible = showDeath;
 		}
 		
 		public function updateScent ():void
