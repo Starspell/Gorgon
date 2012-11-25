@@ -8,7 +8,7 @@ package
 	 */
 	public class ChargingMonster extends MonsterWithSight 
 	{
-		[Embed(source = '../assets/sprites/chargingmonster.png')] private const CHARGING:Class;
+		[Embed(source = '../assets/sprites/smasher.png')] private const CHARGING:Class;
 		
 		[Embed(source = '../assets/audio/roar.mp3')] private const ROAR:Class;
 		[Embed(source = '../assets/audio/wallimpact.mp3')] private const IMPACT:Class;
@@ -26,7 +26,17 @@ package
 		{
 			super( startX, startY );
 			
-			monsterImage = new Image(CHARGING);
+			var sprite:Spritemap = new Spritemap(CHARGING, 16, 16);
+			
+			var dirs:Array = ["down", "up", "left", "right"];
+			
+			for (var i:int = 0; i < dirs.length; i++) {
+				sprite.add(dirs[i],  [i*2 + 0], 0.1);
+				sprite.add("move" + dirs[i],  [i*2 + 1], 0.1);
+			}
+			
+			monsterImage = sprite;
+			
 			monsterImage.centerOO();
 			graphic = monsterImage;
 			addGraphic(monsterSightImage);
@@ -34,6 +44,8 @@ package
 			isStatic = true;
 			
 			direction = "up";
+			
+			sprite.play(direction);
 		}
 		
 		override public function update():void
@@ -41,6 +53,7 @@ package
 			if ( !canSeePlayer && !sawPlayer )
 			{
 				super.update();
+				Spritemap(monsterImage).play(direction);
 			}
 			else
 			{
@@ -59,6 +72,7 @@ package
 				{
 					updateSight();
 					moveWithDirection( chargingTweenTime );
+					Spritemap(monsterImage).play("move" + direction);
 				}
 			}
 		}
