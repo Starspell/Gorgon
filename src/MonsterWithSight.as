@@ -47,9 +47,9 @@ package
 		protected function updateSight():void
 		{
 			var currentWorld:GameWorld = FP.world as GameWorld;
-			
+			/*
 			var lineEndPointX:Number;
-			var lineEndPointY:Number;
+			var lineEndPointY:Number;*/
 			
 			canSeePlayer = false;
 			
@@ -71,8 +71,8 @@ package
 						playerLastSeenAtY = blockingPoints[i + 1] / Main.TW;
 					}
 					
-					lineEndPointX = blockingPoints[i];
-					lineEndPointY = blockingPoints[i + 1];
+					/*lineEndPointX = blockingPoints[i];
+					lineEndPointY = blockingPoints[i + 1];*/
 					
 					i = blockingPoints.length;
 				}
@@ -80,9 +80,9 @@ package
 				sawPlayer = sawPlayer || canSeePlayer;
 			}
 			
-			Draw.setTarget( monsterSight );
+			/*Draw.setTarget( monsterSight );
 			Draw.line( x, y, int( lineEndPointX ), int( lineEndPointY ) );
-			monsterSightImage.updateBuffer();
+			monsterSightImage.updateBuffer();*/
 		}
 	
 		public function setDirectionToSeeablePlayer():void
