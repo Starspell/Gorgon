@@ -119,6 +119,12 @@ package
 				return;
 			}
 			
+			if ( collide("mirror", x + dx * Main.TW, y + dy * Main.TW ) )
+			{
+				hitMirror();
+				return;
+			}
+			
 			canMove = false;
 			
 			FP.tween(this, {x: x+dx*Main.TW, y:y+dy*Main.TW}, tweeningTime, {tweener: FP.tweener, complete: moveDone});
@@ -165,6 +171,11 @@ package
 		}
 		
 		protected function hitWall():void
+		{
+			
+		}
+		
+		protected function hitMirror():void
 		{
 			
 		}

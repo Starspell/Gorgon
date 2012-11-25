@@ -63,6 +63,13 @@ package
 			
 			Main.startScreenShake();
 		}
+		
+		override protected function hitMirror():void
+		{
+			// Would end up breaking the mirror but for now doesn't do anything special
+			
+			hitWall();
+		}
 	}
 
 }

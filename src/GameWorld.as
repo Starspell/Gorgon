@@ -250,6 +250,8 @@ package
 			
 			if ( collidePoint( "gorgon", posX, posY ) ) return "gorgon";
 			
+			if ( collidePoint( "mirror", posX, posY ) ) return "mirror";
+			
 			return null;
 		}
 	}
