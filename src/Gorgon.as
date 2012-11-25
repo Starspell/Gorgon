@@ -13,7 +13,12 @@ package
 		{
 			super( startX, startY );
 			
-			monsterImage = new Image(GORGON);
+			var sprite:Spritemap = new Spritemap(GORGON, 16, 16);
+			
+			sprite.add("hairify", [0,1,2,3,4], 0.1);
+			sprite.play("hairify");
+			
+			monsterImage = sprite;
 			monsterImage.centerOO();
 			graphic = monsterImage;
 			
