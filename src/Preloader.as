@@ -76,6 +76,8 @@ package
 			
 			addChild(text);
 			
+			sitelock("draknek.org");
+			
 			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			
 			if (mustClick) {
@@ -135,6 +137,32 @@ package
 			parent.addChild(new mainClass as DisplayObject);
 			
 			parent.removeChild(this);
+		}
+		
+		public function sitelock (allowed:*):Boolean
+		{
+			var url:String = stage.loaderInfo.url;
+			var startCheck:int = url.indexOf('://' ) + 3;
+			
+			if (url.substr(0, startCheck) != 'http://'
+				&& url.substr(0, startCheck) != 'https://'
+				&& url.substr(0, startCheck) != 'ftp://') return true;
+			
+			var domainLen:int = url.indexOf('/', startCheck) - startCheck;
+			var host:String = url.substr(startCheck, domainLen);
+			
+			if (allowed is String) allowed = [allowed];
+			for each (var d:String in allowed)
+			{
+				if (host.substr(-d.length, d.length) == d) return true;
+			}
+			
+			text.text = "Error: game is sitelocked";
+			text.x = (sw - text.width) * 0.5;
+			
+			throw new Error("Error: this game is sitelocked");
+			
+			return false;
 		}
 	}
 }
