@@ -19,8 +19,8 @@ package
 		protected var monsterSight:BitmapData;
 		protected var monsterSightImage:Image;
 		
-		protected var playerLastSeenAtX:Number;
-		protected var playerLastSeenAtY:Number;
+		protected var playerLastSeenAtX:int;
+		protected var playerLastSeenAtY:int;
 		
 		public function MonsterWithSight( startX:Number = 170, startY:Number = 120 ) 
 		{
@@ -63,23 +63,18 @@ package
 				
 				for ( var i:int = 0; i < blockingPoints.length; i += 2 )
 				{
-					// Stop use from seeing ourselves
-					if ( !(currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] ) == "monster" 
-							&& blockingPoints[i] == x && blockingPoints[i + 1] == y ) )
+					if ( currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] ) == "player" )
 					{
-						if ( currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] ) == "player" )
-						{
-							canSeePlayer = true;
-							
-							playerLastSeenAtX = blockingPoints[i];
-							playerLastSeenAtY = blockingPoints[i + 1];
-						}
+						canSeePlayer = true;
 						
-						lineEndPointX = blockingPoints[i];
-						lineEndPointY = blockingPoints[i + 1];
-						
-						i = blockingPoints.length;
+						playerLastSeenAtX = blockingPoints[i] / Main.TW;
+						playerLastSeenAtY = blockingPoints[i + 1] / Main.TW;
 					}
+					
+					lineEndPointX = blockingPoints[i];
+					lineEndPointY = blockingPoints[i + 1];
+					
+					i = blockingPoints.length;
 				}
 				
 				sawPlayer = sawPlayer || canSeePlayer;
@@ -106,20 +101,15 @@ package
 					
 					for ( var i:int = 0; i < blockingPoints.length; i += 2 )
 					{
-						// Stop use from seeing ourselves
-						if ( !(currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] ) == "monster" 
-								&& blockingPoints[i] == x && blockingPoints[i + 1] == y ) )
+						if ( currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] ) == "player" )
 						{
-							if ( currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] ) == "player" )
-							{
-								canSeePlayer = true;
-								
-								playerLastSeenAtX = blockingPoints[i];
-								playerLastSeenAtY = blockingPoints[i + 1];
-							}
+							canSeePlayer = true;
 							
-							i = blockingPoints.length;
+							playerLastSeenAtX = blockingPoints[i];
+							playerLastSeenAtY = blockingPoints[i + 1];
 						}
+						
+						i = blockingPoints.length;
 					}
 					
 					if ( canSeePlayer )

@@ -29,22 +29,24 @@ package
 			
 			direction = "up";
 			
-			playerLastSeenAtX = x;
-			playerLastSeenAtY = y;
+			playerLastSeenAtX = startX / Main.TW;
+			playerLastSeenAtY = startY / Main.TW;
 		}
 		
 		override public function update():void
 		{
-			if ( x == playerLastSeenAtX && y == playerLastSeenAtY )
+			if ( int(x / Main.TW) == playerLastSeenAtX && int(y / Main.TW) == playerLastSeenAtY )
 			{
 				if ( checkAllDirections )
 				{
 					checkAllDirections = false;
+					
 					setDirectionToSeeablePlayer();
 					
 					if ( direction == "stop" )
 					{
 						direction = "up";
+						sawPlayer = false;
 					}
 				}
 				
