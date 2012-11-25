@@ -42,7 +42,9 @@ package
 		{
 			LevelList.init();
 			Editor.init();
-			CopyPaste.init(stage, pasteCallback);
+			if (devMode) {
+				CopyPaste.init(stage, pasteCallback);
+			}
 			FP.world = new TitleScreen();
 			
 			music.loop();
