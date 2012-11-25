@@ -42,7 +42,7 @@ package
 			LevelList.init();
 			Editor.init();
 			CopyPaste.init(stage, pasteCallback);
-			FP.world = new GameWorld(1);
+			FP.world = new TitleScreen();
 			
 			music.loop();
 			music.volume = 0.5;

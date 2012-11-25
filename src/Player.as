@@ -111,7 +111,14 @@ package
 				stairsSound.play();
 				if ( currentWorld )
 				{
-					FP.world = new GameWorld( currentWorld.id + 1 );
+					if ( currentWorld.id + 1 == LevelList.levels.length )
+					{
+						FP.world = new WinScreen();
+					}
+					else
+					{
+						FP.world = new GameWorld( currentWorld.id + 1 );
+					}
 				}
 				return;
 			}
