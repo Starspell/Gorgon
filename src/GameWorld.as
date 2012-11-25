@@ -16,6 +16,10 @@ package
 		[Embed(source="../assets/sprites/static-tiles.png")]
 		public static const StaticTilesGfx: Class;
 		
+		[Embed(source = '../assets/audio/squelch2.mp3')] private static const SQUELCH:Class;
+		
+		public static var squelchSound:Sfx = new Sfx(SQUELCH);
+		
 		private var playerStartX:Number;
 		private var playerStartY:Number;
 		
@@ -253,6 +257,11 @@ package
 			if ( collidePoint( "mirror", posX, posY ) ) return "mirror";
 			
 			return null;
+		}
+		
+		override public function end():void
+		{
+			squelchSound.stop();
 		}
 	}
 

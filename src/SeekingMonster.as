@@ -47,6 +47,7 @@ package
 					{
 						direction = "up";
 						sawPlayer = false;
+						GameWorld.squelchSound.stop();
 					}
 				}
 				
@@ -54,6 +55,11 @@ package
 			}
 			else
 			{
+				if( !GameWorld.squelchSound.playing )
+				{
+					GameWorld.squelchSound.loop();
+				}
+				
 				updateSight();
 				moveWithDirection( seekingTweenTime );
 			}

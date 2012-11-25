@@ -10,7 +10,12 @@ package
 	{
 		[Embed(source = '../assets/sprites/smellingmonster.png')] private const SMELLING:Class;
 		
+		[Embed(source = '../assets/audio/smellgrowl.mp3')] private const GROWL:Class;
+		
 		private const smellingTween:Number = 20;
+		
+		private var hasSmell:Boolean = false;
+		private var growlSound:Sfx = new Sfx(GROWL);
 		
 		public function SmellingMonster( startX:Number, startY:Number ) 
 		{
@@ -70,6 +75,11 @@ package
 				}
 				else
 				{
+					if ( !hasSmell )
+					{
+						growlSound.play();
+						hasSmell = true;
+					}
 					direction = greatestSmellDir;
 					moveWithDirection( smellingTween );
 				}

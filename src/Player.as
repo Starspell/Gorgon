@@ -2,6 +2,7 @@ package
 {
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Image;
+	import net.flashpunk.Sfx;
 	import net.flashpunk.utils.Key;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.FP;
@@ -16,11 +17,17 @@ package
 	{
 		[Embed(source = '../assets/sprites/player.png')] private const PLAYER:Class;
 		
+		[Embed(source = '../assets/audio/death.mp3')] private const DEATH:Class;
+		[Embed(source = '../assets/audio/stairs.mp3')] private const STAIRS:Class;
+		
 		private const maxSpeed:Number = 2.5;
 		private const tweenTime:Number = 15;
 		
 		private var playerImage:Image;
 		private var canMove:Boolean = true;
+		
+		private var deathSound:Sfx = new Sfx(DEATH);
+		private var stairsSound:Sfx = new Sfx(STAIRS);
 		
 		public var moveQueue:Array = [];
 		public var direction:String;
@@ -69,6 +76,7 @@ package
 			
 			if ( (m && m.canMove) )
 			{
+				playerDies();
 				if ( currentWorld )
 				{
 					FP.world = new GameWorld( currentWorld.id );
@@ -80,6 +88,7 @@ package
 			
 			if ( collide( "spike", x, y ) || collide( "gorgon", x, y ) )
 			{
+				playerDies();
 				if ( currentWorld )
 				{
 					FP.world = new GameWorld( currentWorld.id );
@@ -89,6 +98,7 @@ package
 			
 			if ( collide("goal", x, y) )
 			{
+				stairsSound.play();
 				if ( currentWorld )
 				{
 					FP.world = new GameWorld( currentWorld.id + 1 );
@@ -160,6 +170,11 @@ package
 			}
 			
 			currentWorld.showDeath = false;
+		}
+		
+		private function playerDies():void
+		{
+			deathSound.play();
 		}
 	}
 

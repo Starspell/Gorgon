@@ -10,11 +10,17 @@ package
 	{
 		[Embed(source = '../assets/sprites/chargingmonster.png')] private const CHARGING:Class;
 		
+		[Embed(source = '../assets/audio/roar.mp3')] private const ROAR:Class;
+		[Embed(source = '../assets/audio/wallimpact.mp3')] private const IMPACT:Class;
+		
 		private const chargingTweenTime:Number = 6;
 		private const pauseTime:Number = 0.25;		
 		
 		private var shouldPause:Boolean = true;
 		private var pauseTimer:Number = 0;
+		
+		private var roarSound:Sfx = new Sfx(ROAR);
+		private var impactSound:Sfx = new Sfx(IMPACT);
 		
 		public function ChargingMonster( startX:Number, startY:Number ) 
 		{
@@ -41,6 +47,8 @@ package
 				// Pause before charging
 				if ( shouldPause )
 				{
+					roarSound.play();
+					
 					pauseTimer += FP.elapsed;
 					if ( pauseTimer > pauseTime )
 					{
@@ -60,6 +68,9 @@ package
 			sawPlayer = false;
 			shouldPause = true;
 			pauseTimer = 0;
+			
+			impactSound.play();
+			impactSound.volume = 0.5;
 			
 			Main.startScreenShake();
 		}

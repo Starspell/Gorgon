@@ -8,6 +8,8 @@ package
 	[SWF(width = "640", height = "480", backgroundColor="#000000")]
 	public class Main extends Engine
 	{
+		[Embed(source = '../assets/audio/AA.mp3')] private const MUSIC:Class;
+		
 		private static const shakeMag:Number = 3;
 		private const shakeInterval:Number = 1;
 		
@@ -17,6 +19,8 @@ package
 		
 		private static var cameraX:Number;
 		private static var cameraY:Number;
+		
+		private var music:Sfx = new Sfx(MUSIC);
 		
 		private var editor:Editor;
 		
@@ -39,6 +43,9 @@ package
 			Editor.init();
 			CopyPaste.init(stage, pasteCallback);
 			FP.world = new GameWorld(1);
+			
+			music.loop();
+			music.volume = 0.5;
 		}
 		
 		public override function update ():void
