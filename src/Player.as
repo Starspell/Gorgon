@@ -1,7 +1,7 @@
 package  
 {
 	import net.flashpunk.Entity;
-	import net.flashpunk.graphics.Image;
+	import net.flashpunk.graphics.*;
 	import net.flashpunk.Sfx;
 	import net.flashpunk.utils.Key;
 	import net.flashpunk.utils.Input;
@@ -23,7 +23,7 @@ package
 		private const maxSpeed:Number = 2.5;
 		private const tweenTime:Number = 15;
 		
-		private var playerImage:Image;
+		private var playerImage:Spritemap;
 		private var canMove:Boolean = true;
 		
 		private var deathSound:Sfx = new Sfx(DEATH);
@@ -43,7 +43,15 @@ package
 			Input.define("right", Key.D, Key.RIGHT);
 			Input.define("down", Key.S, Key.DOWN);
 			
-			playerImage = new Image(PLAYER);
+			playerImage = new Spritemap(PLAYER, 16, 16);
+			
+			var dirs:Array = ["down", "up", "left", "right"];
+			
+			for (var i:int = 0; i < dirs.length; i++) {
+				playerImage.add(dirs[i],  [i*1 + 0], 0.1);
+				playerImage.add("move" + dirs[i],  [i*1 + 0], 0.1);
+			}
+			
 			playerImage.centerOO();
 			setHitbox(Main.TW, Main.TW, playerImage.width / 2, playerImage.height / 2);
 			
@@ -54,6 +62,7 @@ package
 		
 		private function moveDone (): void
 		{
+			playerImage.play(direction);
 			canMove = true;
 			direction = null;
 		}
@@ -144,7 +153,7 @@ package
 				{
 					if (direction) 
 					{
-						//sprite.play(direction);
+						//playerImage.play(direction);
 						direction = null;
 					}
 					return;
@@ -162,6 +171,8 @@ package
 			else if (dy > 0) direction = "down";
 			
 			canMove = false;
+			
+			playerImage.play("move" + direction);
 			
 			FP.tween(this, {x: x+dx*Main.TW, y:y+dy*Main.TW}, tweenTime, {tweener: FP.tweener, complete: moveDone});
 		}
