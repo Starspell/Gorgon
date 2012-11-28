@@ -26,7 +26,7 @@ package
 		
 		public static var TW:int = 16;
 		
-		public static var devMode:Boolean = false;
+		public static var devMode:Boolean = true;
 		public static const so:SharedObject = SharedObject.getLocal("draknek/gorgon", "/");
 		
 		public function Main()
@@ -34,7 +34,10 @@ package
 			super(320, 240, 60, true);
 			FP.screen.scale = 2;
 			FP.screen.color = 0x909090;
-			//FP.console.enable();
+			if ( devMode )
+			{
+				FP.console.enable();
+			}
 			FP.console.toggleKey = Key.F1;
 		}
 		

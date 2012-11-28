@@ -61,23 +61,51 @@ package
 				
 				var blockingPoints:Array = SightManager.getPointsOfSight( x, y, directionToUse );
 				
+				var blockingObject:String;
+				
+				var firstMirrorX:int = -1;
+				var firstMirrorY:int = -1;
+				
 				for ( var i:int = 0; i < blockingPoints.length; i += 2 )
 				{
-					if ( currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] ) == "player" )
+					blockingObject = currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] );
+					
+					switch( blockingObject )
 					{
-						canSeePlayer = true;
+						case "player":
+							canSeePlayer = true;
 						
-						playerLastSeenAtX = blockingPoints[i] / Main.TW;
-						playerLastSeenAtY = blockingPoints[i + 1] / Main.TW;
+							playerLastSeenAtX = int( blockingPoints[i] / Main.TW );
+							playerLastSeenAtY = int( blockingPoints[i + 1] / Main.TW );
+							break;
+						case "mirror":
+							if ( firstMirrorX == -1 && firstMirrorY == -1 )
+							{
+								firstMirrorX = int( blockingPoints[i] / Main.TW );
+								firstMirrorY = int( blockingPoints[i + 1] / Main.TW );
+							}
+							break;
+						default:
+							i = blockingPoints.length;
+							break;
+					}
+					
+					for ( var k:int = 0; k < blockingPoints.length; k += 2 )
+					{
+						trace( currentWorld.getTypeAt( blockingPoints[k], blockingPoints[k + 1] ) );
 					}
 					
 					/*lineEndPointX = blockingPoints[i];
 					lineEndPointY = blockingPoints[i + 1];*/
-					
-					i = blockingPoints.length;
 				}
 				
 				sawPlayer = sawPlayer || canSeePlayer;
+				
+				if ( canSeePlayer && firstMirrorX != -1 && firstMirrorY != -1 )
+				{
+					playerLastSeenAtX = firstMirrorX;
+					playerLastSeenAtY = firstMirrorY;
+				}
 			}
 			
 			/*Draw.setTarget( monsterSight );

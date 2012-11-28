@@ -40,6 +40,9 @@ package
 		public var scent2:BitmapData;
 		public var scentDebug:Image;
 		
+		/*public var playerSight:BitmapData;
+		public var playerSightImage:Image;*/
+		
 		public var id:int;
 		public var levelData:LevelData;
 		
@@ -158,10 +161,13 @@ package
 			deathScreenEntity.visible = false;
 			add( deathScreenEntity );
 
-			deathText = new Text("You are dead\nPress space\n\nLook away...");
+			deathText = new Text("You are dead\nPress 'R' to Restart\n\n\nLook away...");
 			deathTextEntity = new Entity(75, 70, deathText);
 			deathTextEntity.visible = false;
 			add( deathTextEntity );
+			
+			/*playerSightImage = new Image( playerSight );
+			playerSightImage.scale = Main.TW;*/
 		}
 		
 		override public function update():void
@@ -169,6 +175,7 @@ package
 			super.update();
 			
 			updateScent();
+			//updatePlayerSight();
 			
 			if ( Main.devMode)
 			{
@@ -255,17 +262,36 @@ package
 			}
 		}
 		
+		/*public function updatePlayerSight():void
+		{			
+			var fillStartX:int = player.centerX / Main.TW - 1;
+			var fillStartY:int = player.centerY / Main.TW - 1;
+			
+			var fillEndX:int = player.centerX / Main.TW + 1;
+			var fillEndY:int = player.centerY / Main.TW + 1;
+			
+			if ( player.blind )
+			{
+				playerSight.fillRect( playerSight.rect, 255 );
+				playerSight.setPixel( player.centerX / Main.TW, player.centerY / Main.TW, 0 );
+			}
+			else
+			{
+				playerSight.fillRect( playerSight.rect, 0 );
+			}
+		}*/
+		
 		public function getTypeAt( posX:int, posY:int ):String
-		{
-			if ( collidePoint( "wall", posX, posY ) ) return "wall";
+		{			
+			if ( collidePoint( "wall"	, posX, posY ) ) return "wall";
 			
 			if ( collidePoint( "monster", posX, posY ) ) return "monster";
 			
-			if ( collidePoint( "player", posX, posY ) ) return "player";
+			if ( collidePoint( "player"	, posX, posY ) ) return "player";
 			
-			if ( collidePoint( "gorgon", posX, posY ) ) return "gorgon";
+			if ( collidePoint( "gorgon"	, posX, posY ) ) return "gorgon";
 			
-			if ( collidePoint( "mirror", posX, posY ) ) return "mirror";
+			if ( collidePoint( "mirror"	, posX, posY ) ) return "mirror";
 			
 			return null;
 		}
@@ -273,6 +299,19 @@ package
 		override public function end():void
 		{
 			squelchSound.stop();
+		}
+		
+		override public function render():void
+		{
+			if ( player.blind )
+			{
+				FP.buffer.fillRect( FP.bounds, 0xFF000000 );
+				player.render();
+			}
+			else
+			{
+				super.render();
+			}
 		}
 	}
 

@@ -35,6 +35,8 @@ package
 		
 		public var hasMoved:Boolean = false;
 		
+		public var blind:Boolean = false;
+		
 		public function Player( startX:Number = 170, startY:Number = 120 ) 
 		{
 			// Defining input groups
@@ -71,7 +73,8 @@ package
 		{
 			var currentWorld:GameWorld = FP.world as GameWorld;
 			
-			if ( Input.pressed(Key.SPACE) )
+			// Changing restart to R
+			if ( Input.pressed(Key.R) )
 			{
 				playerDies();
 				if ( currentWorld )
@@ -79,6 +82,16 @@ package
 					FP.world = new GameWorld( currentWorld.id );
 				}
 				return;
+			}
+			
+			if ( currentWorld && currentWorld.showDeath )
+			{
+				return;
+			}
+			
+			if ( Input.pressed(Key.SPACE) )
+			{
+				blind = !blind;
 			}
 			
 			updateSight();
@@ -160,19 +173,19 @@ package
 				}
 			}
 			
-			if ( collide("wall", x + dx * Main.TW, y + dy * Main.TW ) )
-			{
-				return;
-			}
-			
 			if (dx < 0) direction = "left";
 			else if (dx > 0) direction = "right";
 			else if (dy < 0) direction = "up";
 			else if (dy > 0) direction = "down";
 			
-			canMove = false;
-			
 			playerImage.play("move" + direction);
+			
+			if ( collide("wall", x + dx * Main.TW, y + dy * Main.TW ) )
+			{
+				return;
+			}
+			
+			canMove = false;
 			
 			FP.tween(this, {x: x+dx*Main.TW, y:y+dy*Main.TW}, tweenTime, {tweener: FP.tweener, complete: moveDone});
 		}
@@ -189,7 +202,7 @@ package
 				
 				for ( var i:int = 0; i < blockingPoints.length; i += 2 )
 				{
-					if ( currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] ) == "gorgon" )
+					if ( currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] ) == "gorgon" && !blind )
 					{
 						currentWorld.showDeath = true;
 						return;

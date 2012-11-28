@@ -122,7 +122,6 @@ package
 			if ( collide("mirror", x + dx * Main.TW, y + dy * Main.TW ) )
 			{
 				hitMirror();
-				return;
 			}
 			
 			canMove = false;
