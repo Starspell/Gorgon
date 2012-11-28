@@ -127,6 +127,12 @@ package
 						case 11:
 							e = new Gorgon( ix * Main.TW + Main.TW / 2, iy * Main.TW + Main.TW / 2 );
 							break;
+						case 12:
+							e = new Block( ix * Main.TW, iy * Main.TW );
+							break;
+						case 13:
+							e = new GlassBlock( ix * Main.TW, iy * Main.TW );
+							break;
 						default: trace( "Unknown Tile Type: " + foundTile + " at " + ix + " " + iy );
 					}
 					

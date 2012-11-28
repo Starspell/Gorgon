@@ -180,7 +180,9 @@ package
 			
 			playerImage.play("move" + direction);
 			
-			if ( collide("wall", x + dx * Main.TW, y + dy * Main.TW ) )
+			var gBlock:GlassBlock = collide("glassblock", x + dx * Main.TW, y + dy * Main.TW ) as GlassBlock;
+			
+			if ( collide("wall", x + dx * Main.TW, y + dy * Main.TW ) || ( gBlock && !gBlock.broken ))
 			{
 				return;
 			}

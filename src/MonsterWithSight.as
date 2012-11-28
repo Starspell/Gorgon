@@ -90,11 +90,6 @@ package
 							break;
 					}
 					
-					for ( var k:int = 0; k < blockingPoints.length; k += 2 )
-					{
-						trace( currentWorld.getTypeAt( blockingPoints[k], blockingPoints[k + 1] ) );
-					}
-					
 					/*lineEndPointX = blockingPoints[i];
 					lineEndPointY = blockingPoints[i + 1];*/
 				}

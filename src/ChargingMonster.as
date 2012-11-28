@@ -95,6 +95,11 @@ package
 			
 			hitWall();
 		}
+		
+		override protected function hitGlassblock( glassBlock:GlassBlock ):void
+		{
+			glassBlock.breakBlock();
+		}
 	}
 
 }

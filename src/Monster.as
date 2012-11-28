@@ -124,6 +124,13 @@ package
 				hitMirror();
 			}
 			
+			var glassBlk:GlassBlock = collide("glassblock", x + dx * Main.TW, y + dy * Main.TW ) as GlassBlock;
+			
+			if ( glassBlk )
+			{
+				hitGlassblock( glassBlk );
+			}
+			
 			canMove = false;
 			
 			FP.tween(this, {x: x+dx*Main.TW, y:y+dy*Main.TW}, tweeningTime, {tweener: FP.tweener, complete: moveDone});
@@ -175,6 +182,11 @@ package
 		}
 		
 		protected function hitMirror():void
+		{
+			
+		}
+		
+		protected function hitGlassblock( glassBlock:GlassBlock ):void
 		{
 			
 		}
