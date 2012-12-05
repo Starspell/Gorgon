@@ -200,15 +200,13 @@ package
 			{
 				var directionToUse:String = !direction ? previousDir : direction;
 				
-				var blockingPoints:Array = SightManager.getPointsOfSight( x, y, directionToUse );
+				var entities:Array = SightManager.getPointsOfSight( x, y, directionToUse );
 				
-				for ( var i:int = 0; i < blockingPoints.length; i += 2 )
-				{
-					if ( currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] ) == "gorgon" && !blind )
-					{
-						currentWorld.showDeath = true;
-						return;
-					}
+				var last:Entity = entities[entities.length - 1];
+				
+				if (!blind && last && last.type == "gorgon") {
+					currentWorld.showDeath = true;
+					return;
 				}
 			}
 			
