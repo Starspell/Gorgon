@@ -24,17 +24,20 @@ package
 		
 		public static var squelchSound:Sfx = new Sfx(SQUELCH);
 		
-		private var playerStartX:Number;
-		private var playerStartY:Number;
+		public var playerStartX:Number;
+		public var playerStartY:Number;
 		
 		private var deathScreenEntity:Entity;
 		private var deathText:Text;
 		private var deathTextEntity:Entity;
 		
 		public var player:Player;
+		public var startAtEnd:Boolean;
+		public var spawnBabyOnStairs:Boolean;
 		public var showDeath:Boolean = false;
 		
 		public var monsters:Array = [];
+		public var gorgonBabyRef:GorgonBaby;
 		
 		public var scent:BitmapData;
 		public var scent2:BitmapData;
@@ -46,12 +49,15 @@ package
 		public var id:int;
 		public var levelData:LevelData;
 		
-		public function GameWorld( _id:int, _levelData:LevelData = null ) 
+		public function GameWorld( _id:int, _levelData:LevelData = null, startAtEnd:Boolean = false, spawnBabyOnStairs:Boolean = false ) 
 		{
 			Text.font = "My Font";
 			
 			this.id = _id;
 			this.levelData = _levelData;
+			
+			this.startAtEnd = startAtEnd;
+			this.spawnBabyOnStairs = spawnBabyOnStairs;
 			
 			if (! levelData) {
 				if (id <= 0) {
@@ -91,13 +97,21 @@ package
 							wallMask.setTile(ix, iy, true);
 							break;
 						case 2: 
-							playerStartX = ix * Main.TW; playerStartY = iy * Main.TW; 
+							if ( !startAtEnd )
+							{
+								playerStartX = ix * Main.TW; playerStartY = iy * Main.TW; 
+							}
+							e = new StairsUp( ix * Main.TW, iy * Main.TW );
 							break;
 						case 3: 
 							e = new Monster( ix * Main.TW + Main.TW / 2, iy * Main.TW + Main.TW / 2 );
 							break;
 						case 4: 
-							e = new Goal( ix * Main.TW, iy * Main.TW ); 
+							if ( startAtEnd )
+							{
+								playerStartX = ix * Main.TW; playerStartY = iy * Main.TW; 
+							}
+							e = new StairsDown( ix * Main.TW, iy * Main.TW ); 
 							break;
 						case 5:
 							e = new MonsterWithSight( ix * Main.TW + Main.TW / 2, iy * Main.TW + Main.TW / 2 ); 
@@ -133,6 +147,10 @@ package
 						case 13:
 							e = new GlassBlock( ix * Main.TW, iy * Main.TW );
 							break;
+						case 14:
+							e = new GorgonBaby( ix * Main.TW + Main.TW / 2, iy * Main.TW + Main.TW / 2 );
+							gorgonBabyRef = e as GorgonBaby;
+							break;
 						default: trace( "Unknown Tile Type: " + foundTile + " at " + ix + " " + iy );
 					}
 					
@@ -150,7 +168,36 @@ package
 			
 			add(wall);
 			
-			player = new Player( playerStartX + Main.TW / 2, playerStartY + Main.TW / 2 );
+			updateLists();
+			
+			// Need to put the player in a nice spot
+			if ( getTypeAt( playerStartX, playerStartY - Main.TW ) != "wall" )
+			{
+				player = new Player( playerStartX + Main.TW / 2, playerStartY - Main.TW + Main.TW / 2 );
+			}
+			else if ( getTypeAt( playerStartX + Main.TW , playerStartY ) != "wall" )
+			{
+				player = new Player( playerStartX + Main.TW + Main.TW / 2, playerStartY + Main.TW / 2 );
+			}
+			else if ( getTypeAt( playerStartX , playerStartY + Main.TW ) != "wall" )
+			{
+				player = new Player( playerStartX + Main.TW / 2, playerStartY + Main.TW + Main.TW / 2 );
+			}
+			else if ( getTypeAt( playerStartX - Main.TW , playerStartY ) != "wall" )
+			{
+				player = new Player( playerStartX - Main.TW + Main.TW / 2, playerStartY + Main.TW / 2 );
+			}
+			else
+			{
+				trace( "Unable to place player" );
+			}
+			
+			if ( spawnBabyOnStairs )
+			{
+				gorgonBabyRef = new GorgonBaby( playerStartX + Main.TW / 2, playerStartY + Main.TW / 2 );
+				monsters.push(gorgonBabyRef);
+				add(gorgonBabyRef);
+			}
 			
 			add(player);
 			
@@ -182,6 +229,11 @@ package
 			
 			updateScent();
 			//updatePlayerSight();
+			
+			if ( Input.pressed( Key.F3 ) )
+			{
+				Main.honourMode = !Main.honourMode;
+			}
 			
 			if ( Main.devMode)
 			{
@@ -267,25 +319,6 @@ package
 				scentDebug.updateBuffer();
 			}
 		}
-		
-		/*public function updatePlayerSight():void
-		{			
-			var fillStartX:int = player.centerX / Main.TW - 1;
-			var fillStartY:int = player.centerY / Main.TW - 1;
-			
-			var fillEndX:int = player.centerX / Main.TW + 1;
-			var fillEndY:int = player.centerY / Main.TW + 1;
-			
-			if ( player.blind )
-			{
-				playerSight.fillRect( playerSight.rect, 255 );
-				playerSight.setPixel( player.centerX / Main.TW, player.centerY / Main.TW, 0 );
-			}
-			else
-			{
-				playerSight.fillRect( playerSight.rect, 0 );
-			}
-		}*/
 		
 		public function getTypeAt( posX:int, posY:int ):String
 		{			

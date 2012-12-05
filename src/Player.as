@@ -21,7 +21,7 @@ package
 		[Embed(source = '../assets/audio/stairs.mp3')] private const STAIRS:Class;
 		
 		private const maxSpeed:Number = 2.5;
-		private const tweenTime:Number = 15;
+		public static const playerTweenTime:Number = 15;
 		
 		private var playerImage:Spritemap;
 		private var canMove:Boolean = true;
@@ -79,17 +79,22 @@ package
 				playerDies();
 				if ( currentWorld )
 				{
-					FP.world = new GameWorld( currentWorld.id );
+					FP.world = new GameWorld( currentWorld.id, null, currentWorld.startAtEnd, currentWorld.spawnBabyOnStairs );
 				}
 				return;
 			}
 			
-			if ( currentWorld && currentWorld.showDeath )
+			if ( !Main.honourMode && currentWorld && currentWorld.showDeath )
 			{
 				return;
 			}
 			
-			if ( Input.pressed(Key.SPACE) )
+			if ( Main.honourMode )
+			{
+				blind = false;
+			}
+			
+			if ( !Main.honourMode && Input.pressed(Key.SPACE) )
 			{
 				blind = !blind;
 			}
@@ -111,7 +116,7 @@ package
 				playerDies();
 				if ( currentWorld )
 				{
-					FP.world = new GameWorld( currentWorld.id );
+					FP.world = new GameWorld( currentWorld.id, null, currentWorld.startAtEnd, currentWorld.spawnBabyOnStairs );
 				}
 				return;
 			}
@@ -123,12 +128,12 @@ package
 				playerDies();
 				if ( currentWorld )
 				{
-					FP.world = new GameWorld( currentWorld.id );
+					FP.world = new GameWorld( currentWorld.id, null, currentWorld.startAtEnd, currentWorld.spawnBabyOnStairs );
 				}
 				return;
 			}
 			
-			if ( collide("goal", x, y) )
+			if ( collide("stairsDown", x, y) )
 			{
 				stairsSound.play();
 				if ( currentWorld )
@@ -139,8 +144,22 @@ package
 					}
 					else
 					{
-						FP.world = new GameWorld( currentWorld.id + 1 );
+						FP.world = new GameWorld( currentWorld.id + 1, null, false, currentWorld.gorgonBabyRef != null );
 					}
+				}
+				return;
+			}
+			
+			if ( collide("stairsUp", x, y) )
+			{
+				stairsSound.play();
+				if ( currentWorld.id - 1 < 0 )
+				{
+					FP.world = new WinScreen();
+				}
+				else
+				{
+					FP.world = new GameWorld( currentWorld.id - 1, null, true, currentWorld.gorgonBabyRef != null );
 				}
 				return;
 			}
@@ -189,7 +208,13 @@ package
 			
 			canMove = false;
 			
-			FP.tween(this, {x: x+dx*Main.TW, y:y+dy*Main.TW}, tweenTime, {tweener: FP.tweener, complete: moveDone});
+			if ( currentWorld && currentWorld.gorgonBabyRef )
+			{
+				currentWorld.gorgonBabyRef.targetTileX = x / Main.TW;
+				currentWorld.gorgonBabyRef.targetTileY = y / Main.TW;
+			}
+			
+			FP.tween(this, {x: x+dx*Main.TW, y:y+dy*Main.TW}, playerTweenTime, {tweener: FP.tweener, complete: moveDone});
 		}
 		
 		private function updateSight():void
@@ -204,10 +229,13 @@ package
 				
 				for ( var i:int = 0; i < blockingPoints.length; i += 2 )
 				{
-					if ( currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] ) == "gorgon" && !blind )
+					if ( currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] ) == "gorgon" )
 					{
-						currentWorld.showDeath = true;
-						return;
+						if ( Main.honourMode || !blind )
+						{
+							currentWorld.showDeath = true;
+							return;
+						}
 					}
 				}
 			}
