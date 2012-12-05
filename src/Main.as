@@ -27,6 +27,7 @@ package
 		public static var TW:int = 16;
 		
 		public static var devMode:Boolean = true;
+		public static var honourMode:Boolean = true;
 		public static const so:SharedObject = SharedObject.getLocal("draknek/gorgon", "/");
 		
 		public function Main()
