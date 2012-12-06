@@ -16,11 +16,11 @@ package
 		
 		public static function getPointsOfSight( x:Number, y:Number, direction:String ):Array
 		{
-			var blockingPoints:Array = new Array();
+			var entities:Array = new Array();
 			
 			var currentWorld:GameWorld = FP.world as GameWorld;
 			
-			if (! currentWorld) return blockingPoints;
+			if (! currentWorld) return entities;
 			
 			var dx:int = 0;
 			var dy:int = 0;
@@ -40,7 +40,7 @@ package
 					dy = 1;
 				break;
 				default:
-					return blockingPoints;
+					return entities;
 			}
 			
 			while (true) {
@@ -54,7 +54,7 @@ package
 				
 				if ( e )
 				{
-					blockingPoints.push(e);
+					entities.push(e);
 					
 					break;
 				}
@@ -63,15 +63,15 @@ package
 				
 				if ( mirror )
 				{
-					blockingPoints.push(mirror);
+					entities.push(mirror);
 					
-					blockingPoints = blockingPoints.concat( getPointsOfSight( x, y, mirror.getBounceDir( direction ) ) );
+					entities = entities.concat( getPointsOfSight( x, y, mirror.getBounceDir( direction ) ) );
 					
 					break;
 				}
 			}
 			
-			return blockingPoints;
+			return entities;
 		}
 		
 	}
