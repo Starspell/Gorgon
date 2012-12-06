@@ -16,7 +16,10 @@ package
 			x = ix*Main.TW;
 			y = iy*Main.TW;
 			
-			setHitbox(Main.TW, Main.TW);
+			x += Main.TW*0.5;
+			y += Main.TW*0.5;
+			
+			setHitbox(Main.TW, Main.TW, Main.TW*0.5, Main.TW*0.5);
 			
 			var image:Spritemap = new Spritemap(Gfx, 32, 32);
 			
@@ -24,6 +27,9 @@ package
 			
 			image.originX = int(dir % 2) ? 0 : Main.TW;
 			image.originY = int(dir / 2) ? 0 : Main.TW;
+			
+			image.x = -Main.TW*0.5;
+			image.y = -Main.TW*0.5;
 			
 			graphic = image;
 			
