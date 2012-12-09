@@ -350,6 +350,35 @@ package
 			else
 			{
 				super.render();
+				//renderReflections();
+			}
+		}
+		
+		public function renderReflections():void
+		{
+			var dirs:Array = ["left", "right", "up", "down"];
+			
+			for each (var dir:String in dirs) {
+				var entities:Array = SightManager.getPointsOfSight(player.x, player.y, dir);
+				
+				var first:Entity = entities[0];
+				
+				if (first.type != "mirror") continue;
+				
+				var last:Entity = entities[entities.length - 1];
+				
+				if (last.type == "mirror" || last.type == "wall") continue;
+				
+				var _x:Number = last.x;
+				var _y:Number = last.y;
+				
+				last.x = first.x;
+				last.y = first.y;
+				
+				last.render();
+				
+				last.x = _x;
+				last.y = _y;
 			}
 		}
 	}
