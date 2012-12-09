@@ -91,20 +91,16 @@ package
 				var blockingPoints:Array;
 					
 				for ( var d:int = 0; d < 4; d++ )
-				{				
-					blockingPoints = SightManager.getPointsOfSight( x, y, direction );
+				{
+					var entities:Array = SightManager.getPointsOfSight( x, y, direction );
 					
-					for ( var i:int = 0; i < blockingPoints.length; i += 2 )
-					{
-						if ( currentWorld.getTypeAt( blockingPoints[i], blockingPoints[i + 1] ) == "player" )
-						{
-							canSeePlayer = true;
-							
-							playerLastSeenAtX = blockingPoints[i];
-							playerLastSeenAtY = blockingPoints[i + 1];
-						}
+					var last:Entity = entities[entities.length - 1];
+					
+					if (last.type == "player") {
+						canSeePlayer = true;
 						
-						i = blockingPoints.length;
+						playerLastSeenAtX = last.x;
+						playerLastSeenAtY = last.y;
 					}
 					
 					if ( canSeePlayer )
