@@ -8,7 +8,7 @@ package
 	[SWF(width = "640", height = "480", backgroundColor="#000000")]
 	public class Main extends Engine
 	{
-		[Embed(source = '../assets/audio/AA.mp3')] private const MUSIC:Class;
+		[Embed(source = '../assets/audio/AA.mp3')] private static const MUSIC:Class;
 		
 		private static const shakeMag:Number = 3;
 		private const shakeInterval:Number = 1;
@@ -20,7 +20,7 @@ package
 		private static var cameraX:Number;
 		private static var cameraY:Number;
 		
-		private var music:Sfx = new Sfx(MUSIC);
+		private static var music:Sfx = new Sfx(MUSIC);
 		
 		private var editor:Editor;
 		
@@ -29,6 +29,8 @@ package
 		public static var devMode:Boolean = true;
 		public static var honourMode:Boolean = true;
 		public static const so:SharedObject = SharedObject.getLocal("draknek/gorgon", "/");
+		
+		public static var mute:Boolean = false;
 		
 		public function Main()
 		{
@@ -99,6 +101,20 @@ package
 			
 			cameraX = FP.camera.x;
 			cameraY = FP.camera.y;
+		}
+		
+		public static function toggleSounds():void
+		{
+			mute = !mute;
+			
+			if ( music.playing )
+			{
+				music.stop();
+			}
+			else
+			{
+				music.loop();
+			}
 		}
 	}
 }

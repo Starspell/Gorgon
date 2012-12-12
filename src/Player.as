@@ -73,6 +73,11 @@ package
 		{
 			var currentWorld:GameWorld = FP.world as GameWorld;
 			
+			if ( Input.pressed(Key.M) )
+			{
+				Main.toggleSounds();
+			}
+			
 			// Changing restart to R
 			if ( Input.pressed(Key.R) )
 			{
@@ -135,7 +140,11 @@ package
 			
 			if ( collide("stairsDown", x, y) )
 			{
-				stairsSound.play();
+				if ( !Main.mute )
+				{
+					stairsSound.play();
+				}
+				
 				if ( currentWorld )
 				{
 					if ( currentWorld.id + 1 == LevelList.levels.length )
@@ -144,7 +153,8 @@ package
 					}
 					else
 					{
-						FP.world = new GameWorld( currentWorld.id + 1, null, false, currentWorld.gorgonBabyRef != null );
+						FP.world = new GameWorld( currentWorld.id + 1, null, 
+							false, currentWorld.gorgonBabyRef != null && !currentWorld.gorgonBabyRef.isStatic );
 					}
 				}
 				return;
@@ -152,14 +162,19 @@ package
 			
 			if ( collide("stairsUp", x, y) )
 			{
-				stairsSound.play();
+				if ( !Main.mute )
+				{
+					stairsSound.play();
+				}
+				
 				if ( currentWorld.id - 1 < 0 )
 				{
 					FP.world = new WinScreen();
 				}
 				else
 				{
-					FP.world = new GameWorld( currentWorld.id - 1, null, true, currentWorld.gorgonBabyRef != null );
+					FP.world = new GameWorld( currentWorld.id - 1, null, 
+						true, currentWorld.gorgonBabyRef != null && !currentWorld.gorgonBabyRef.isStatic );
 				}
 				return;
 			}
@@ -240,7 +255,10 @@ package
 		
 		private function playerDies():void
 		{
-			deathSound.play();
+			if ( !Main.mute )
+			{
+				deathSound.play();
+			}
 		}
 	}
 

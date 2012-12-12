@@ -36,6 +36,11 @@ package
 			
 			super.update();
 			
+			if ( Input.pressed(Key.M) )
+			{
+				Main.toggleSounds();
+			}
+			
 			// Replace with button
 			if ( Input.pressed(Key.ENTER) || Input.pressed(Key.SPACE) )
 			{

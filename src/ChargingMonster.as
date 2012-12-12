@@ -60,7 +60,10 @@ package
 				// Pause before charging
 				if ( shouldPause )
 				{
-					roarSound.play();
+					if ( !Main.mute )
+					{
+						roarSound.play();
+					}
 					
 					pauseTimer += FP.elapsed;
 					if ( pauseTimer > pauseTime )
@@ -83,8 +86,11 @@ package
 			shouldPause = true;
 			pauseTimer = 0;
 			
-			impactSound.play();
-			impactSound.volume = 0.5;
+			if ( !Main.mute )
+			{
+				impactSound.play();
+				impactSound.volume = 0.5;
+			}
 			
 			Main.startScreenShake();
 		}

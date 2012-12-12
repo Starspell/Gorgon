@@ -148,8 +148,11 @@ package
 							e = new GlassBlock( ix * Main.TW, iy * Main.TW );
 							break;
 						case 14:
-							e = new GorgonBaby( ix * Main.TW + Main.TW / 2, iy * Main.TW + Main.TW / 2 );
-							gorgonBabyRef = e as GorgonBaby;
+							if ( !spawnBabyOnStairs )
+							{
+								e = new GorgonBaby( ix * Main.TW + Main.TW / 2, iy * Main.TW + Main.TW / 2 );
+								gorgonBabyRef = e as GorgonBaby;
+							}
 							break;
 						default: trace( "Unknown Tile Type: " + foundTile + " at " + ix + " " + iy );
 					}

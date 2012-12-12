@@ -77,7 +77,10 @@ package
 				{
 					if ( !hasSmell )
 					{
-						growlSound.play();
+						if ( !Main.mute )
+						{
+							growlSound.play();
+						}
 						hasSmell = true;
 					}
 					direction = greatestSmellDir;

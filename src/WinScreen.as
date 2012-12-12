@@ -24,6 +24,11 @@ package
 		{
 			super.update();
 			
+			if ( Input.pressed(Key.M) )
+			{
+				Main.toggleSounds();
+			}
+			
 			if ( Input.pressed(Key.ENTER) || Input.pressed(Key.SPACE) )
 			{
 				FP.world = new TitleScreen();

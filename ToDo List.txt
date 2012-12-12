@@ -1,0 +1,18 @@
+Bug: the baby gorgon isn't always the same distance behind you. Not sure why.
+
+Bug: going back into the final level gives you another baby gorgon. This one doesn't follow you creating a chain though :(
+
+Bug: chasing enemy following you in the mirror will sometimes reverse direction if there are multiple mirrors around
+
+BUg: funny things going on with staircases.
+
+All the enemies should be gorgons. Or at least we should have moving gorgons.
+
+Credits page
+
+Pushable blocks! Everyone loves pushable blocks!
+Render stuff in mirrors
+Get to a gorgon baby then guide it out
+Tiles which block (not kill) the player but not line of sight
+Interactions between monsters! Gorgon freezes enemy! Charging enemy kills others!
+More enemy types!
