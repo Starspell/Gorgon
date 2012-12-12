@@ -1,10 +1,8 @@
 Bug: the baby gorgon isn't always the same distance behind you. Not sure why.
 
-Bug: going back into the final level gives you another baby gorgon. This one doesn't follow you creating a chain though :(
-
 Bug: chasing enemy following you in the mirror will sometimes reverse direction if there are multiple mirrors around
 
-BUg: funny things going on with staircases.
+Bug: funny things going on with changing levels. If you go to the last level or a level without a down staircase and then try to use the PgUp PgDown button the game crashes
 
 All the enemies should be gorgons. Or at least we should have moving gorgons.
 
